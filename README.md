@@ -52,7 +52,7 @@ The player assembles a party of up to four heroes, and outfits them with consuma
 <!-- end of the list -->
 
 ## Features To-Do
-Leave the previous list, doggonit
+
 - More character-specific abilites and spells.
   - Make heroes targetable by abilities (Ex. Cure) and potions.
 - More unique monster abilities and AI.
@@ -74,6 +74,7 @@ Leave the previous list, doggonit
 <!-- end of the list -->
 
 ## Dream Big To-Do
+
 * Hire an artist to create actual tile and sprite assets, rather than borrow from FF VI.
 * Hire a composer to create actual music, rather than borrow from FF VI.
 * Use currently-owned and invest in more Unity Asset packs for audio clips, rather than borrow from FF VI.
