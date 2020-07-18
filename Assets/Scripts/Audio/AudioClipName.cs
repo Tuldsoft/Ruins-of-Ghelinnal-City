@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// An enumeration of the audio clip names
+/// An enumeration of the audio clip names. Used to load wav files.
 /// </summary>
 public enum AudioClipName
 {

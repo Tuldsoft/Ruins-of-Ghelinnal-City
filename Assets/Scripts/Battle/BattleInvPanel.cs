@@ -4,17 +4,21 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+/// <summary>
+/// Attached to prefabBattleInvPanel, a panel in BattleInventory grid.
+/// </summary>
 public class BattleInvPanel : MonoBehaviour
 {
+    #region Fields
     [SerializeField]
     Image icon = null, selectionButton = null;
     [SerializeField]
     Text heldText = null;
     //Text nameText = null, descriptionLabel = null;
 
-    int? index = null;
+    int? index = null; // passed as selection number
     bool selected = false;
-    int held = 0;
+    int held = 0; // quantity in party stash
     string fullName;
     string description;
     
@@ -22,18 +26,24 @@ public class BattleInvPanel : MonoBehaviour
 
     Color darkTint = new Color(0f, 0f, 0f, 0.4f);
     Color yellowTint = new Color(1f, 1f, 0f, 0.05f);
+    #endregion
 
-    
+    #region Methods
     // Start is called before the first frame update
     void Start()
     {
         EventManager.AddInvoker_Battle_InvSelect(this);
         EventManager.AddListener_Battle_InvSelect(ToggleSelect);
-        //EventManager.AddInvoker_Battle_InvDeselect(this);
-        //EventManager.AddListener_Battle_InvDeselect(Deselect);
-
     }
 
+    /// <summary>
+    /// Stores item information for this panel
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="name"></param>
+    /// <param name="description"></param>
+    /// <param name="sprite">item sprite</param>
+    /// <param name="held">number held</param>
     public void SetIndex(int index, string name, string description, Sprite sprite, int held)
     {
         this.index = index;
@@ -47,6 +57,11 @@ public class BattleInvPanel : MonoBehaviour
         Deselect();
     }
 
+    /// <summary>
+    /// Called when this or another panel is selected
+    /// </summary>
+    /// <param name="index">index of the panel selected</param>
+    /// <param name="message">unused in this method</param>
     void ToggleSelect(int? index, string message)
     {
         if (this.index == index)
@@ -66,18 +81,20 @@ public class BattleInvPanel : MonoBehaviour
         }
     }
 
+    // Highlight this panel
     void Select()
     {
         selected = true;
         selectionButton.color = yellowTint;
     }
-
+    // De-highlight this panel
     void Deselect()
     {
         selected = false;
         selectionButton.color = darkTint;
     }
     
+    // Called by SelectionButton.On_Click()
     public void Click_InvPanelClick()
     {
         AudioManager.Chirp();
@@ -86,8 +103,10 @@ public class BattleInvPanel : MonoBehaviour
         invSelect.Invoke(index, message);
     }
 
+    // event handling
     public void AddListener_Battle_InvSelect(UnityAction<int?,string> listener)
     {
         invSelect.AddListener(listener);
     }
+    #endregion
 }

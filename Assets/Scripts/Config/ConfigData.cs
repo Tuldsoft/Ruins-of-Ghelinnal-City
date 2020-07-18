@@ -6,19 +6,20 @@ using UnityEngine;
 using System.IO;
 
 /// <summary>
-/// A container for the configuration data
+/// ConfigData is a transfer container class, used for reading information from a csv file. The
+/// information stored into it, and then passed on to a static class such as BattleAbilityData
+/// as BattleAbilityData.
+/// REFACTOR: Create a parent and children classes
 /// </summary>
 public class ConfigData 
 {
     #region Fields
-
+    // File names that this class handles
     const string EnemyDataFileName = "EnemyData.csv";
     const string InvDataFileName = "InvData.csv";
     const string AbilityDataFileName = "AbilityData.csv";
 
-    //ConfigDataType type = ConfigDataType.EnemyData;
-
-    
+    // Dictionaries to store the data once read from the csv file. 
     Dictionary<EnemyName, BattleStats> enemyStatData = new Dictionary<EnemyName, BattleStats>();
     Dictionary<InvNames, InvItem> invStatData = new Dictionary<InvNames, InvItem>();
     Dictionary<BattleMode, BattleAbility> abilityStatData = new Dictionary<BattleMode, BattleAbility>();
@@ -30,44 +31,40 @@ public class ConfigData
 
     #region Properties
 
+    // Dictionaries to store the data and pass it on to a static class
     public Dictionary<EnemyName, BattleStats> EnemyStatData { get { return enemyStatData; } }
 
     public Dictionary<InvNames, InvItem> InvStatData { get { return invStatData; } }
 
     public Dictionary<BattleMode, BattleAbility> AbilityStatData { get { return abilityStatData; } }
 
-    //public ConfigDataType DataType { get { return type; } }
-
     #endregion
 
     #region Constructor
 
     /// <summary>
-    /// Constructor
-    /// Reads configuration data from a file. If the file
-    /// read fails, the object contains default values for
-    /// the configuration data
+    /// Reads configuration data from a file. If the file read fails, the constructor contains
+    /// default values for each kind of configuration data
+    /// REFACTOR: Break this into three different constructors
     /// </summary>
     public ConfigData(ConfigDataType type)
     {
-        //this.type = type;
-
-        // read and save configuration data from file
+        // Read and save configuration data from file
         StreamReader input = null;
 
+        // Three kinds of ConfigData
         switch (type)
         {
             case ConfigDataType.EnemyData:
-
                 #region EnemyData
 
                 try
                 {
-                    // create stream reader input
+                    // Create stream reader input
                     input = File.OpenText(Path.Combine(
                         Application.streamingAssetsPath, EnemyDataFileName));
 
-                    // populate StatNames from header row 
+                    // Populate StatNames from header row 
                     string currentLine = input.ReadLine();
                     string[] names = currentLine.Split(',');
                     BattleStatNames[] statHeader = new BattleStatNames[names.Length];
@@ -87,14 +84,14 @@ public class ConfigData
                         }
                     }
 
-                    // only procede forward if there is no error with the headers
+                    // Only procede forward if there is no error with the headers
                     if (errorMessage == null)
                     {
-                        // populate values for enemyData
+                        // Populate values for enemyData
                         currentLine = input.ReadLine();
                         while (currentLine != null)
                         {
-                            // parse currnet line into name and stat values
+                            // Parse current line into name and stat values
                             string[] tokens = currentLine.Split(',');
                             EnemyName enemyName =
                                 (EnemyName)Enum.Parse(
@@ -392,7 +389,8 @@ public class ConfigData
     #endregion
 
     #region Methods
-
+    // Sets default values for all* enemies (incomplete list). Used only in case of a read error.
+    // REFACTOR: Finish typing out stats, or set all to stats of a wererat.
     void SetEnemyStatDataDefaultValues()
     {
         enemyStatData.Clear();
@@ -472,6 +470,8 @@ public class ConfigData
 
     }
 
+    // Gives all inventory items mentioned in InvNames the statistics of a tiny health potion.
+    // Used only in case of a read error.
     void SetInvDataDefaultValues()
     {
         invStatData.Clear();
@@ -481,6 +481,8 @@ public class ConfigData
         }
     }
 
+    // Constructs default ability data for each ability named in BattleMode.
+    // Used only in case of read error.
     void SetAbilityDataDefaultValues() 
     {
         abilityStatData.Clear();
@@ -489,9 +491,6 @@ public class ConfigData
             abilityStatData.Add(name, new BattleAbility(name));
         }
     }
-
-
-
 
     /*static string GetExceptionDetails(Exception exception)
     {

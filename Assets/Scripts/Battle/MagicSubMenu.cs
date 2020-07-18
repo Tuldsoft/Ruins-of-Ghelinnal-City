@@ -3,41 +3,58 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// A SubMenu for Magic options. Fills the box with options based on the active hero.
+/// Uses a SpellClick class to discern which spell is clicked.
+/// </summary>
+
 public class MagicSubMenu : BattleSubMenu
 {
+    #region Fields and Properties
+    // Mode will determine which spell is cast upon click
     BattleMode mode = BattleMode.Magic_Cure;
-
     public override BattleMode Mode { get { return mode; } }
+    
+    // MagicSubMenu reconfigures itself base on who is casting magic
     HeroType type = HeroType.Sabin;
     bool initialized = false;
 
+    // Text GameObject, to be used as a template. Positioned in the first position.
     [SerializeField]
     Text spellText = null;
 
+    // Two columns of spells, second column is to the right by this amount
     const float SecondColumnXOffset = 150f;
 
-    //Vector2 firstPosition = new Vector2(-485, -135);
-    //Vector2 backPosition = new Vector2(-335, -285);
-    
-
+    // Up to 6 positions (more can be added later through use of a More and Back button).
     Vector2[] positions = new Vector2[6];
+    // Expandable list of objects
     List<Text> spellTexts = new List<Text>();
+    #endregion
 
+    // Called when using .SetActive(true). Called by BattleManager.Click_Magic()
     private void OnEnable()
     {
         SetSpells(type);
     }
 
+    // Called just before being set active. Called by BattleManager.Click_Magic()
+    // Used once in whole, but subsequently only sets HeroType.
+    // Requires a HeroType to know what spells to set.
     public void Initialize(HeroType type)
     {
+        // Set type before setting active.
         this.type = type;
 
+        // The rest is only performed once.
         if (!initialized) 
         {
             initialized = true;
 
+            // Collect height from template
             float height = spellText.rectTransform.rect.height * spellText.rectTransform.localScale.y;
 
+            // define 6 positions based on height and onset, for later use
             positions[0] = spellText.transform.localPosition;
             positions[1] = new Vector2(positions[0].x, positions[0].y - height);
             positions[2] = new Vector2(positions[0].x, positions[0].y - (2 * height));
@@ -45,18 +62,15 @@ public class MagicSubMenu : BattleSubMenu
             positions[4] = new Vector2(positions[0].x + SecondColumnXOffset, positions[0].y - height);
             positions[5] = new Vector2(positions[0].x + SecondColumnXOffset, positions[0].y - (2 * height));
 
+            // Store reference to parentTransform
             Transform parentTransform = spellText.transform.parent.transform;
 
-            //List<string> spellNames = new List<string>();
-            //List<Text> spellTexts = new List<Text>();
-
+            // Create a text object for each spell in the BattleMode enum, using spellText as template
             foreach(BattleMode mode in BattleMode.GetValues(typeof(BattleMode)))
             {
                 if (mode.ToString().StartsWith("Magic_"))
                 {
                     string name = mode.ToString().Substring(6);
-                    //spellNames.Add(name);
-                    //spellModes.Add(mode);
 
                     GameObject newText = GameObject.Instantiate(spellText.gameObject);
                     newText.transform.SetParent(parentTransform);
@@ -70,39 +84,24 @@ public class MagicSubMenu : BattleSubMenu
                 }
             }
 
+            // Destroy template
             Destroy(spellText.gameObject);
 
+            // Place ALL spellTexts using 6 positions
             for (int i = 0; i < spellTexts.Count; i++)
             {
                 spellText.transform.localPosition = positions[i];
             }
-
-/*
-            initialized = true;
-            List<Text> texts = new List<Text>();
-            gameObject.GetComponentsInChildren<Text>(true, texts);
-            foreach (Text text in texts)
-            {
-                if (text.gameObject.name == "CureText") { spellTexts = text; }
-                if (text.gameObject.name == "FireballText") { fireballText = text; }
-            }
-            float height = spellTexts.rectTransform.rect.height * spellTexts.rectTransform.localScale.y;
-
-            positions[0] = firstPosition;
-            positions[1] = new Vector2(firstPosition.x, firstPosition.y - height);
-            positions[2] = new Vector2(firstPosition.x, firstPosition.y - (2 * height));
-            positions[3] = new Vector2(backPosition.x, firstPosition.y);
-            positions[4] = new Vector2(backPosition.x, firstPosition.y - height);
-            positions[5] = new Vector2(backPosition.x, firstPosition.y - (2 * height));*/
         }
     }
 
-
-
+    // Called whenever the subMenu becomes active. Enables and sorts spells for display
     public void SetSpells(HeroType type)
     {
-        Initialize(type);
+        // Set the HeroType
+        Initialize(type); 
         
+        // Form a list of available spells based on HeroType
         List<BattleMode> enableModes = new List<BattleMode>();
         switch (type)
         {
@@ -117,15 +116,21 @@ public class MagicSubMenu : BattleSubMenu
                 enableModes.Add(BattleMode.Magic_Poison);
                 break;
             default:
+                // The Magic subMenu is disabled except for the above, so there
+                // should never be a default case.
                 enableModes.Add(BattleMode.Magic_Cure);
                 break;
         }
 
+        // Organize and enable spellTexts into position slots
         int i = 0;
         foreach (Text spellText in spellTexts)
         {
+            // collect mode of this spellText
             BattleMode mode = spellText.gameObject.GetComponent<SpellClick>().Mode;
             
+            // Compare to list of enabled spells. 
+            // If there's a match, enable and position, otherwise disable.
             if (enableModes.Contains(mode)) 
             {
                 spellText.gameObject.SetActive(true);
@@ -137,61 +142,13 @@ public class MagicSubMenu : BattleSubMenu
                 spellText.gameObject.SetActive(false);
             }
         }
-
-        //int i = 0;
-        //i += CheckEnable(enableModes, BattleMode.Magic_Cure, spellTexts.gameObject, i) ? 1 : 0;
-        //i += CheckEnable(enableModes, BattleMode.Magic_Fireball, fireballText.gameObject, i) ? 1 : 0;
-        
-        /*if (enableMode.Contains(BattleMode.Magic_Cure))
-        {
-            cureText.transform.position = positions[i];
-            cureText.gameObject.SetActive(true);
-            i++;
-        }
-        else { cureText.gameObject.SetActive(false); }
-
-        if (enableMode.Contains(BattleMode.Magic_Fireball))
-        {
-            fireballText.transform.position = positions[i];
-            fireballText.enabled = true;
-            //i++;
-        }
-        else { fireballText.enabled = false; }*/
-
     }
 
-    bool CheckEnable (List<BattleMode> modes, BattleMode mode, GameObject gameObj, int positionNum)
-    {
-        if (modes.Contains(mode))
-        {
-            gameObj.transform.localPosition = positions[positionNum];
-            gameObj.gameObject.SetActive(true);
-            return true;
-        }
-        else 
-        { 
-            gameObj.SetActive(false);
-            return false;
-        }
-
-    }
-
+    // Used by the SpellClick on a spellText, rather than the inspector
     public void Click_Spell(BattleMode mode)
     {
         this.mode = mode;
-        base.CloseSubMenu();
-    }
-
-    public void Click_Cure()
-    {
-        mode = BattleMode.Magic_Cure;
-        base.CloseSubMenu();
-    }
-
-    public void Click_Fireball()
-    {
-        mode = BattleMode.Magic_Fireball;
-        base.CloseSubMenu();
+        base.CloseSubMenu(); // BattleSubMenu.CloseSubMenu() does the invocation, based on this.mode
     }
 
 }

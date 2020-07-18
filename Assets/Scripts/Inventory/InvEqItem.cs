@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The only difference between InvItem and InvEqItem is the inclusion of a BattleStats.
+/// 
+/// InvEqItem includes weapons, armor, and tomes, but not potions.
+/// </summary>
 public class InvEqItem : InvItem
 {
     public BattleStats BStats { get; }
@@ -11,8 +16,5 @@ public class InvEqItem : InvItem
         : base( name, fullName, description, sprite, id, price, quantity, type, subtype, slot, rank, persist)
     {
         BStats = stats;
-
     }
-
-
 }

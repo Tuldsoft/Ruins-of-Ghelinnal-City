@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// A container class for dungeon enemies
 public class EnemyInfo
 {
     public int ID { get; set; }

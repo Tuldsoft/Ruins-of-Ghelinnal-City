@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Provides sprite manipulation unique to Celes. 
+/// </summary>
 public class CelesSprites : HeroSprites
 {
+    // Add RunicBlade sprites
     public Sprite[] RunicBlade { get; set; } = new Sprite[7];
 
-
+    // Add RunicBlade updates
     public override void UpdateSprite(Stance stance = Stance.Idle, float? duration = null, int index = 0)
     {
         switch (stance)
@@ -16,9 +20,11 @@ public class CelesSprites : HeroSprites
                 break;
             
         }
+
         base.UpdateSprite(stance, duration, index);
     }
-
+    
+    // Add RunicBlade idling
     protected override void ReturnToIdleSprite()
     {
         if ( hero.BattleMode == BattleMode.Runic)
@@ -33,7 +39,6 @@ public class CelesSprites : HeroSprites
             }
             
         }
-                
 
         base.ReturnToIdleSprite();
 

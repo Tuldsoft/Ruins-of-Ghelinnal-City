@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// An enumeration of Stances, mostly used for choosing which hero sprite to display.
+/// </summary>
 public enum Stance
 {
     Portrait,

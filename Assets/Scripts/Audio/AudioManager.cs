@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// The audio manager
+/// The static audio manager
 /// </summary>
 public static class AudioManager
 {
+    #region Fields and Properties
+
     static bool initialized = false;
 
     static GameAudioSource gameAudioSource;
@@ -32,6 +34,9 @@ public static class AudioManager
         get { return initialized; }
     }
 
+    #endregion
+
+    #region Public Static Methods
     /// <summary>
     /// Initializes the audio manager
     /// </summary>
@@ -40,6 +45,8 @@ public static class AudioManager
     {
         initialized = true;
         gameAudioSource = source;
+
+        // Load resources, using filenames in AudioClipNames enum
 
         foreach (AudioClipName clip in AudioClipName.GetValues(typeof(AudioClipName)))
         {
@@ -50,6 +57,7 @@ public static class AudioManager
             }
             else
             {
+                // Most music clips include a starter (intro) clip and a looped clip
                 musicStartClips.Add(clip, Resources.Load<AudioClip>(@"Audio\Music\" + clip.ToString() + "_start"));
                 //Debug.Log("Loaded: " + clip.ToString() + "_start");
 
@@ -58,7 +66,7 @@ public static class AudioManager
             }
         }
 
-        // Load Player Preferences
+        // Load Player Volume Preferences
         if (PlayerPrefs.HasKey(PlayerPrefsKeys.SoundVolume.ToString()))
         {
             soundVolume = PlayerPrefs.GetFloat(PlayerPrefsKeys.SoundVolume.ToString());
@@ -71,6 +79,7 @@ public static class AudioManager
         gameAudioSource.SetMusicVolume(musicVolume);
     }
 
+    // Set Volume for Sound and Music
     public static void SetSoundVolume(float percent)
     {
         percent = percent == 0.001f ? 0f : percent;
@@ -84,7 +93,7 @@ public static class AudioManager
         gameAudioSource.SetMusicVolume(percent);
     }
 
-
+    // Special case music
     public static void Intro()
     {
         gameAudioSource.PlayMusic(soundClips[AudioClipName.Opening_Theme_1]);
@@ -94,6 +103,7 @@ public static class AudioManager
         gameAudioSource.PlayMusic(soundClips[AudioClipName.Rest_In_Peace]);
     }
 
+    // Used anytime a menu option is chosen
     public static void Chirp()
     {
         string nameString = "MenuChirp";
@@ -106,19 +116,22 @@ public static class AudioManager
         gameAudioSource.PlaySound(clip);
     }
 
+    // Special chirp for Close menu items
     public static void Close()
     {
         gameAudioSource.PlaySound(soundClips[AudioClipName.MenuChirp0]);
     }
     
+    // Play sound or music
     public static void PlaySound(AudioClipName name, float volume = 1f)
     {
         gameAudioSource.PlaySound(soundClips[name], volume);
     }
-
     public static void PlayMusic(AudioClipName name)
     {
         gameAudioSource.PlayMusic(musicStartClips[name], musicLoopClips[name]);
     }
+
+    #endregion
 
 }

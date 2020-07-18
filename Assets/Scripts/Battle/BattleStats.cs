@@ -2,23 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A variety of base stats used by creatures AND equipment. Used in damage
+/// calculations, derived calculations, as well as equipping and unequipping items.
+/// Most fields are relatively constant, generally only changed internally by merging
+/// another BattleStat. Fields have default values as shown.
+/// All properties are read-only, to prevent outside sources from changing it on the fly.
+/// Includes Import/Export functions for quick-creation.
+/// Includes self-deriving of stats, and Equip/Unequip methods
+/// Serializable: Its fields/properties can be saved to and loaded from a file.
+/// </summary>
+
 [System.Serializable]
 public class BattleStats 
 {
-    int baseHPMax = 50;
+    // HP
+    int baseHPMax = 50; 
     public int BaseHPMax { get { return baseHPMax; } }
     int hpMaxBonus = 0;
     int hpMax = 50;
     public int HPMax { get { return hpMax; } }
 
-
+    // MP
     int baseMPMax = 50;
     public int BaseMPMax { get { return baseMPMax; } }
     int mpMaxBonus = 0;
     int mpMax = 50;
     public int MPMax { get { return mpMax; } }
 
-
+    // Damage-related
     int strength = 5;
     public int Strength { get { return strength; } }
 
@@ -31,12 +43,13 @@ public class BattleStats
     int resistance = 5;
     public int Resistance { get { return resistance; } }
 
-
+    // Stats used in derivation
     int stamina = 5;
     public int Stamina { get { return stamina; } }
     int agility = 5;
     public int Agility { get { return agility; } }
 
+    // Derived stats
     int baseHit = 0;
     public int BaseHit { get { return baseHit; } }
     int hitPercentBonus = 0;
@@ -52,14 +65,20 @@ public class BattleStats
     int critChance = 0;
     public int CritChance { get { return critChance; } }
 
+    // Min and Max Gold reward (only used by monsters)
     int minReward = 10;
     public int MinReward { get { return minReward; } }
 
     int maxReward = 25;
     public int MaxReward { get { return maxReward; } }
 
-    
 
+    /// <summary>
+    /// Calculates the functional HPMax and MPMax, first by applying any increase/decrease,
+    /// then by deriving an additional bonus based on stamina, magic, and resistance.
+    /// </summary>
+    /// <param name="hpIncrease">Fixed increase or decrease to base max hp, if any.</param>
+    /// <param name="mpIncrease">Fixed increase or decrease to base max mp, if any.</param>
     public void UpdateMax(int hpIncrease = 0, int mpIncrease = 0)
     {
         hpMaxBonus += hpIncrease;
@@ -68,9 +87,15 @@ public class BattleStats
             + hpMaxBonus;
         mpMax = Mathf.CeilToInt(baseMPMax * (1f + Mathf.Pow((float)resistance, 0.5f) / 100f
             + Mathf.Pow((float)resistance, 0.5f) / 100f) ) + mpMaxBonus;
-
     }
 
+    /// <summary>
+    /// Calculates the functional HitPercent, EvadePercent, and CritChance, first by applying 
+    /// any increase/decrease, then deriving an additional bonus based on agility.
+    /// </summary>
+    /// <param name="hitIncrease">Fixed increase to HitPercent, if any.</param>
+    /// <param name="evadeIncrease">Fixed increase to EvadePercent, if any.</param>
+    /// <param name="critIncrease">Fixed increase to CritChance, if any.</param>
     public void UpdateHitEvadeCrit(int hitIncrease = 0, int evadeIncrease = 0, int critIncrease = 0)
     {
         hitPercentBonus += hitIncrease;
@@ -83,8 +108,17 @@ public class BattleStats
             + evadePercentBonus;
     }
 
+    /// <summary>
+    /// Adds a given BattleStats's values to itself, and deducts another if supplied.
+    /// The most common scenario for this method is in donning (adding stats) and doffing
+    /// (deducting stats) equipment, but the method is also used for Tomes, which have 
+    /// single-value BattleStats.
+    /// </summary>
+    /// <param name="addStats"></param>
+    /// <param name="removeStats"></param>
     public void Equip (BattleStats addStats, BattleStats removeStats = null)
     {
+        // Deduct existing equipment stats, if any, from self
         if (removeStats != null)
         {
             strength -= removeStats.Strength;
@@ -94,26 +128,29 @@ public class BattleStats
             stamina -= removeStats.Stamina;
             agility -= removeStats.Agility;
 
-            // BaseHPMax applies to hpbonus, etc. so that it is on top of the derived stat.
-
+            // Derived stats use a "bonus", and are then calculated.
             UpdateMax(-removeStats.BaseHPMax, -removeStats.BaseMPMax);
             UpdateHitEvadeCrit(-removeStats.BaseHit, -removeStats.BaseEvade, -removeStats.CritChance);
         }
 
+        // Add new equipment/tome stats to self
         strength += addStats.Strength;
         defense += addStats.Defense;
         magic += addStats.Magic;
         resistance += addStats.Resistance;
         stamina += addStats.Stamina;
         agility += addStats.Agility;
-        
-        // BaseHPMax applies to hpbonus, etc. so that it is on top of the derived stat.
 
+        // Derived stats use a "bonus", and are then calculated.
         UpdateMax(addStats.BaseHPMax, addStats.BaseMPMax);
         UpdateHitEvadeCrit(addStats.BaseHit, addStats.BaseEvade, addStats.CritChance);
 
     }
 
+    /// <summary>
+    /// Uses an array of ints to overwrite BattleStat's values
+    /// </summary>
+    /// <param name="import"></param>
     public void Import(int[] import)
     {
         if (import.Length != 13)
@@ -141,6 +178,7 @@ public class BattleStats
 
     }
 
+    // Used in file operations to check the csv for errors
     public bool ValidateOrder(int slot, BattleStatNames name)
     {
         switch (slot)
@@ -174,9 +212,10 @@ public class BattleStats
             default:
                 return false;
         }
-
     }
 
+    // Creates an array of ints for the creation of duplicate BattleStats
+    // Used in file operations and when comparing equipment
     public int[] Export()
     {
         int[] export = new int[13];

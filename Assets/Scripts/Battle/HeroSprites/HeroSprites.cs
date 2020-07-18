@@ -2,27 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Class to store a hero's sprites
+/// </summary>
 public class HeroSprites
 {
+    #region Fields and Properties
+
     protected BattleHero hero = null;
     protected GameObject heroObject = null;
-    protected EventTimer spriteTimer;
+    protected EventTimer spriteTimer; // timer for swapping sprites, triggers UpdateSprite
     protected Sprite heroSprite = null;
     protected SpriteRenderer heroSpriteRenderer = null;
 
     public Sprite Portrait { get; set; }
     public Sprite Idle { get; set; }
-    public Sprite[] Walk { get; set; } = new Sprite[4];
-    public Sprite[] Jump { get; set; } = new Sprite[2];
+    public Sprite[] Walk { get; set; } = new Sprite[4]; // each hero has 4 walking sprites
+    public Sprite[] Jump { get; set; } = new Sprite[2]; // each hero has 2 jumping sprites
     public Sprite Kneel { get; set; }
     public Sprite Swing { get; set; }
     public Sprite Defend { get; set; }
-    public Sprite[] Cast { get; set; } = new Sprite[2];
+    public Sprite[] Cast { get; set; } = new Sprite[2]; // each hero has 2 casting sprites
     public Sprite Item { get; set; }
     public Sprite Struck { get; set; }
     public Sprite Dead { get; set; }
     public Sprite Victory { get; set; }
 
+    // additional sprites defined by child classes of HeroSprites
+
+    #endregion
+
+    #region Methods
+
+    // Initializes this instance of HeroSprites
     // used by BattleHero.LoadObj in BattleManager
     // also used by HeroMovement
     public void SetObj(GameObject heroObj, BattleHero hero = null)
@@ -36,7 +49,9 @@ public class HeroSprites
         spriteTimer.AddListener_Finished(ReturnToIdleSprite);
     }
 
-    // used at the end of the sprite timer
+    // Chooses the correct idling sprite
+    // Used at the end of the sprite timer
+    // Altered by children of HeroSprites
     protected virtual void ReturnToIdleSprite()
     {
         if (hero.IsDead) // at the end of Struck
@@ -61,17 +76,26 @@ public class HeroSprites
         }
         else
         {
-            UpdateSprite();
+            UpdateSprite(); // no argument returns to Idle
         }
         
     }
 
+    /// <summary>
+    /// Change the displayed sprite and set the duration of the displayed sprite before
+    /// going to the next sprite in the sequence, or returning to idle. UpdateSprite relies on
+    /// an EventTimer called spriteTimer. Almost all animations are created in this manner.
+    /// </summary>
+    /// <param name="stance">The activity the hero is engaged in</param>
+    /// <param name="duration">Duration to display the sprite in seconds</param>
+    /// <param name="index">Index of the sprite to use, when the sprite is an array</param>
     // pass null duration if there is no time limit, otherwise float seconds
     public virtual void UpdateSprite(Stance stance = Stance.Idle, float? duration = null, int index = 0)
     {
-        // interrupt any timer
+        // interrupt any timer currently running
         if (spriteTimer.Running) { spriteTimer.Stop(); }
 
+        // choose the next sprite according to Stance
         switch (stance)
         {
             case Stance.Portrait:
@@ -113,12 +137,16 @@ public class HeroSprites
                 heroSprite = Victory;
                 break;
         }
+        
+        // set the sprite
         heroSpriteRenderer.sprite = heroSprite;
 
+        // start timer
         if (duration != null)
         {
             spriteTimer.Duration = (float)duration;
             spriteTimer.Run();
         }
     }
+    #endregion
 }

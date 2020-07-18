@@ -338,3 +338,39 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/Assets/2000_Icons
+/Assets/2D Forest Tileset Pack Toon Style
+/Assets/prefabs
+/Assets/animations
+/Assets/PhysicsMaterials
+/Assets/controllers
+/Assets/Resources/Audio
+/Assets/Resources/BattlePrefabs/Enemies
+/Assets/Resources/BattlePrefabs
+/Assets/Resources/DungeonPrefabs
+/Assets/Resources/MenuPrefabs
+/Assets/Resources/Sprites
+/Assets/Scenes
+/Assets/Sprites
+/Assets/TilePalettes
+/Assets/Tiny Fantasy Icons
+/Build - Mac v1021.app/Contents
+/Build - Standalone
+/Build - Standalone v03
+/Build - Standalone v067
+/Build - Standalone v085
+/Build - Standalone v095b
+/Build - Standalone v100
+/Build - Standalone v101
+/Build - Standalone v102
+/Build - Standalone v1021
+/Build - WebGL
+/Build - WebGL v03
+/Build - WebGL v067
+/Library
+/ProjectSettings
+/Temp
+*.csproj
+*.zip
+/bugs.docx
+/Builds - Past

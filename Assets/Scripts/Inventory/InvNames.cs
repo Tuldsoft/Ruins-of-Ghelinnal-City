@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// An enumeration of all items
 public enum InvNames
 {
     Potion_Health_Tiny,

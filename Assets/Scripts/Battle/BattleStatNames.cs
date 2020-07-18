@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// An enumeration of names for BattleStats. Used in file operations.
+/// </summary>
 public enum BattleStatNames 
 {
     BaseHPMax,

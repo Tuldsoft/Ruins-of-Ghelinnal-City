@@ -2,25 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A container class with a constructor. Contains the BattleEnemys used in the battle
+/// scene. The constructor determines which enemies are included and their placements, 
+/// based on the creature that was contacted in the dungeon. Called by BattleManager.Start(),
+/// and stored in BattleLoader.
+/// </summary>
 public class EnemyParty
 {
+    #region Fields and Properties
+    // EnemyName of the enemy encountered in the dungeon. Ergo, the name of the battle encounter.
     EnemyName partyName;
 
+    // Contain for each KIND of enemy, with an array of positions for each KIND.
     Dictionary<EnemyName, Vector2[]> placements = new Dictionary<EnemyName, Vector2[]>();
 
+    // Remaining enemies in the party
     List<BattleEnemy> enemies = new List<BattleEnemy>();
-
     public List<BattleEnemy> Enemies { get { return enemies; } }
 
+    // Whether or not this PARTY is the boss encounter of the dungeon
     bool isBoss = false;
     public bool IsBoss { get { return isBoss; } }
 
+    // If there is a boss enemy WITHIN the party, the EnemyName of that boss.
+    // Sets the BattleEnemy.IsBoss to true for that EnemyName
     EnemyName? bossID = null;
 
+    #endregion
+
+    #region Constructor
     public EnemyParty(EnemyName party)
     {
+        // Recyclable array of positions for a single KIND of enemy
         Vector2[] positions;
-        // set num of each type and position
+
+        // Based on the enemy encountered in the dungeon, form an EnemyParty
         switch (party)
         {
             case EnemyName.none:
@@ -29,7 +47,6 @@ public class EnemyParty
                 positions[0] = new Vector2(2.62f, 0.49f);
                 placements.Add(EnemyName.Wererat, positions);
                 break;
-
 
             case EnemyName.Wererat:
                 // three wererats
@@ -190,7 +207,6 @@ public class EnemyParty
                 positions[3] = new Vector2(5.8f, 3.1f);
                 positions[4] = new Vector2(6.1f, 1.0f);
                 placements.Add(EnemyName.Bomb, positions);
-
                 break;
 
             case EnemyName.Sky_Armor:
@@ -200,7 +216,6 @@ public class EnemyParty
                 positions[1] = new Vector2(5.0f, 3.1f);
                 positions[2] = new Vector2(6.6f, 0.9f);
                 placements.Add(EnemyName.Sky_Armor, positions);
-
                 break;
 
             case EnemyName.Spit_Fire:
@@ -218,7 +233,6 @@ public class EnemyParty
                 positions = new Vector2[1];
                 positions[0] = new Vector2(5.8f, 2.2f);
                 placements.Add(EnemyName.Spit_Fire, positions);
-
                 break;
 
             case EnemyName.Chupon:
@@ -255,7 +269,6 @@ public class EnemyParty
                 positions[0] = new Vector2(3.1f, 0.3f);
                 positions[1] = new Vector2(5.5f, 0.9f);
                 placements.Add(EnemyName.Whisper, positions);
-                
                 break;
 
             case EnemyName.Whisper:
@@ -284,7 +297,6 @@ public class EnemyParty
                 positions[1] = new Vector2(3.2f, 3.0f);
                 positions[2] = new Vector2(5.3f, 0.3f);
                 placements.Add(EnemyName.Apokryphos, positions);
-
                 break;
 
             case EnemyName.Brainpan:
@@ -301,7 +313,6 @@ public class EnemyParty
                 positions = new Vector2[1];
                 positions[0] = new Vector2(5.1f, 2.9f);
                 placements.Add(EnemyName.Misfit, positions);
-
                 break;
 
             case EnemyName.Misfit:
@@ -314,7 +325,6 @@ public class EnemyParty
                 positions = new Vector2[1];
                 positions[0] = new Vector2(6.2f, 0.5f);
                 placements.Add(EnemyName.Apokryphos, positions);
-
                 break;
 
             case EnemyName.Wirey_Dragon:
@@ -324,7 +334,6 @@ public class EnemyParty
                 positions[1] = new Vector2(4.0f, 2.8f);
                 positions[2] = new Vector2(6.4f, 1.2f);
                 placements.Add(EnemyName.Wirey_Dragon, positions);
-
                 break;
 
             case EnemyName.Ninja:
@@ -337,7 +346,6 @@ public class EnemyParty
                 positions = new Vector2[1];
                 positions[0] = new Vector2(4.0f, 2.8f);
                 placements.Add(EnemyName.Wirey_Dragon, positions);
-
                 break;
 
             case EnemyName.Behemoth:
@@ -346,7 +354,6 @@ public class EnemyParty
                 positions[0] = new Vector2(2.2f, 1.6f);
                 positions[1] = new Vector2(5.9f, 1.6f);
                 placements.Add(EnemyName.Behemoth, positions);
-
                 break;
 
             case EnemyName.Dragon:
@@ -354,7 +361,6 @@ public class EnemyParty
                 positions = new Vector2[1];
                 positions[0] = new Vector2(4.45f, 1.63f);
                 placements.Add(EnemyName.Dragon, positions);
-
                 break;
 
             case EnemyName.Atma_Weapon:
@@ -375,36 +381,49 @@ public class EnemyParty
                 break;
         }
 
+        // Read through placements, assigning BattleIDs in the process 
+        
+        // index becomes battleID. It is also the index for the list of enemies.
         int index = 0;
+
+        // For each KIND of enemy (EnemyName)
         foreach (KeyValuePair<EnemyName,Vector2[]> pair in placements)
         {
+            // Load a prefab
             GameObject enemyPrefab = Resources.Load<GameObject>(@"BattlePrefabs\Enemies\" 
                 + pair.Key.ToString());
 
+            // For each enemy of this Kind (EnemyName)
             for (int i = 0; i < pair.Value.Length; i++)
             {
+                // Instantiate the prefab GameObject
                 GameObject enemy = GameObject.Instantiate(enemyPrefab);
 
+                // If there are multiple enemies of this Kind, they are
+                // differentiated here. (Ex: "Wererat 1", "Wererat 2")
                 int choiceNumTag = 0;
                 if (pair.Value.Length > 1) { choiceNumTag = i + 1; }
 
+                // Sets this single enemy as IsBoss
                 bool boss = false;
                 if (pair.Key == bossID) { boss = true; }
                 
+                // Create a BattleEnemy and add it to the party
                 BattleEnemy bEnemy = BattleEnemyData.MakeNewBattleEnemy(pair.Key);
                 enemies.Add(bEnemy);
 
+                // Provides BattleEnemy setup info (including its gameObject)
                 bEnemy.LoadObjs(index, choiceNumTag, enemy, pair.Value[i], boss);
 
-
+                // Sets DamageDisplay and HPMPSliders and EnemyDeath
                 enemy.GetComponentInChildren<DamageDisplay>(true).SetDamageDisplay(index, 
                     bEnemy.HP, bEnemy.HPMax, bEnemy.MP, bEnemy.MPMax);
                 enemy.GetComponentInChildren<EnemyDeath>(true).SetID(index);
+                
+                // Proceed to the next enemy
                 index++;
             }
         }
-
-
     }
-
+    #endregion
 }

@@ -2,23 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A static class containing the text of lore, divided into story segments. Stores
+/// lists for blocks of text, which can be displayed according to AccessLevel. 
+/// Uses parallel lists.
+/// REFACTOR: Use a list of a struct instead of parallel lists.
+/// </summary>
 public static class TalkData 
 {
+    #region Fields and Properties
+    // Dungeon level access required of each block of text
     static List<int> accessLevel = new List<int>();
     public static List<int> AccessLevel { get { return accessLevel; } }
 
-
+    // Title of each block of text
     static List<string> titles = new List<string>();
     public static List<string> Titles { get { return titles; } }
 
-
+    // Bodies of text
     static List<string> texts = new List<string>();
     public static List<string> Texts { get { return texts; } }
 
+    // The total number of texts written in the lore
     public static int MaxTalks { get { return texts.Count; } }
 
     static bool initialized = false;
+    #endregion
 
+    #region Methods
+    // Initialize() is called by the initializer. This creates and store the texts for reference,
+    // mostly by a TalkMonitor
     public static void Initialize()
     {
         if (initialized)
@@ -28,7 +41,7 @@ public static class TalkData
 
         initialized = true;
 
-        // 0
+        // Texts[0]
 
         accessLevel.Add(1);
         titles.Add("Arrival");
@@ -52,7 +65,7 @@ public static class TalkData
             "It's taboo for us to go ourselves, and in our weakened state, we're even more vulnerable." +
             " You seem capable, though. Could you take a look around?");
 
-        // 1
+        // Texts[1]
 
         accessLevel.Add(2);
         titles.Add("First Delve");
@@ -76,7 +89,7 @@ public static class TalkData
             " bound their souls to be our protectors. They called themselves Baelnorn. We've only ever" +
             " met one. You should talk to Arthon - he's the current caretaker of our local relic.");
 
-        // 2
+        // Texts[2]
         accessLevel.Add(3);
         titles.Add("Arthon");
         texts.Add("Hullo! Sir Reghinael, it looks like we will have visitors after all! I must thank" +
@@ -105,8 +118,8 @@ public static class TalkData
             "Well, I suppose we can try. Hey, Sir Rheghinael, we have visitors! C'mon, wake up! "
             + "\n\n" +
             "… Oh.");
-        
-        // 3
+
+        // Texts[3]
         accessLevel.Add(3);
         titles.Add("Prophesy");
         texts.Add("The Prophesy of Reghinael, Baelnorn of the Galathi"
@@ -131,7 +144,7 @@ public static class TalkData
             + "\n\n" +
             "Dragon pact. Dragon pact. Dragon pact.");
 
-        //4
+        // Texts[4]
         accessLevel.Add(4);
         titles.Add("Jirindace'el");
         texts.Add("Thank you for releasing me from that curse. Long have I watched and protected these" +
@@ -159,7 +172,7 @@ public static class TalkData
             "destruction the cataclysm has wrought.");
 
 
-        // 5
+        // Texts[5]
         accessLevel.Add(4);
         titles.Add("Laboratory");
         texts.Add("You find a book in the library entitled Those Who Watch."
@@ -188,7 +201,7 @@ public static class TalkData
             "necromancy, rip souls from poor victims and bind them to machines of war. This is" +
             " called Magitek.");
 
-        // 6
+        // Texts[6]
         accessLevel.Add(4);
         titles.Add("Patinnils");
         texts.Add("You find a book in the library entitled Ghelinnal City."
@@ -217,7 +230,7 @@ public static class TalkData
             " housed in the temple to Sehanine Moonbow. It was capable of drawing fatigue, despair," +
             " and sorrow into itself.");
 
-        // 7
+        // Texts[7]
         accessLevel.Add(5);
         titles.Add("Paurkin");
         texts.Add("A mountain underground? Well, that's a new one. Ever since the cataclysm shattered" +
@@ -248,7 +261,7 @@ public static class TalkData
             "Crazy, huh? Seriously, though, you can trust good ol' Finnel. Borodin does! Don'cha, you" +
             " big lump o' lard!");
 
-        // 8 
+        // Texts[8]
 
         accessLevel.Add(6);
         titles.Add("The Cataclysm");
@@ -283,7 +296,7 @@ public static class TalkData
             " are taboo? Golgaq is probably in several shards. There's no telling what odd portals" +
             " and horrors may have opened below.");
 
-        // 9 
+        // Texts[9]
 
         accessLevel.Add(7);
         titles.Add("Calengund");
@@ -319,7 +332,7 @@ public static class TalkData
             " material world and the realm of fey spirits. You have seen it too, have you not? Or" +
             " have you also forgotten?");
 
-        // 10
+        // Texts[10]
 
         accessLevel.Add(8);
         titles.Add("Floating Continent");
@@ -343,7 +356,7 @@ public static class TalkData
             "But the dragon has been defeated, and its Master can no longer reach Valinda'ar. I shall" +
             " shut the doorway. My people are healed, and now I can rest.");
 
-        // 11
+        // Texts[11]
 
         accessLevel.Add(8);
         titles.Add("Rathazzan");
@@ -357,9 +370,6 @@ public static class TalkData
             "And you, you see before you the next Lord of Death. My sister is naught but dust, nor can" +
             " your paltry gods do anything to stop me. Go on, run back to your werebear friends with" +
             " this honor: Today, you have seen your nemesis.");
-
-
-
     }
-
+    #endregion
 }

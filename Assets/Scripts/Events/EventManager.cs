@@ -3,9 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// The EventManager is a system that utilizes Unity Events. It stores all invokers and
+/// listeners for every event, and cross registers each with each. Doing this allows objects
+/// to call a method without knowing who the recipient of the message will be.
+/// 
+/// Rather than splitting this class by fields, properties, and methods, it is grouped by
+/// the events. Each event is handled with a predictable template, with one or more
+/// invokers, and one or more listeners.
+/// 
+/// 
+/// 
+/// REFACTOR: Make a generic, annonymous event handler template, and make this static.
+/// </summary>
 public class EventManager
 {
-    #region Battle_HeroTurnOver
+    #region Battle_TurnOver
+    // Battle: Tells the BattleManager that the end of a turn has arrived.
 
     // invokers: TurnInvoker
     static List<TurnInvoker> invokers_Battle_TurnOver = new List<TurnInvoker>();
@@ -34,6 +48,7 @@ public class EventManager
     #endregion
 
     #region Battle_ChoiceSelectionEvent
+    // Battle: Sets or unsets an enemy as the intended target
 
     // invokers: EnemyChoice (menu and sprites)
     static List<EnemyChoice> invokers_Battle_ChoiceSelection = new List<EnemyChoice>();
@@ -61,8 +76,10 @@ public class EventManager
     }
 
     #endregion
-    
+
     #region Battle_FightChoice
+    // Battle: The user choses who to target with Fight
+
     // invokers: FightChoice (on menu option and all enemies if clicked while enabled
     static List<FightChoice> invokers_FightChoice = new List<FightChoice>();
     // listeners: BattleManager (others?)
@@ -90,6 +107,8 @@ public class EventManager
     #endregion
 
     #region Battle_PropelHitTarget
+    // Battle: A propelled object has hit its intended target
+
     // invokers: PropelObject (int targetNum) (-1 hero, 0+ enemy)
     static List<PropelObject> invokers_Battle_PropelHitTarget = new List<PropelObject>();
     // listeners: BattleManager (others?)
@@ -117,6 +136,8 @@ public class EventManager
     #endregion
 
     #region Battle_DisplayDamage
+    // Battle: Initiates a floating damage display
+
     // invokers: BattleManager
     static List<BattleManager> invokers_Battle_DisplayDamage = new List<BattleManager>();
     // listeners: DamageDisplays, BattleEnemys, BattleHero?
@@ -144,6 +165,8 @@ public class EventManager
     #endregion
 
     #region Battle_ApplyDamage
+    // Battle: Change the HP or MP value of a hero or enemy
+
     // invokers: DamageDisplays
     static List<DamageDisplay> invokers_Battle_ApplyDamage = new List<DamageDisplay>();
     // listeners: BattleManager
@@ -171,6 +194,9 @@ public class EventManager
     #endregion
 
     #region Battle_RefreshHPMPSliders
+    // Battle: A call to update a display of HP and MP Sliders, either enemy or hero
+    // battleid, hpslider reduction, mpslider reduction
+
     // invokers: BattleManager
     static List<BattleManager> invokers_Battle_RefreshHPMPSliders = new List<BattleManager>();
     // listeners: DamageDisplays, BattleEnemys, BattleHero?
@@ -199,6 +225,8 @@ public class EventManager
     #endregion
 
     #region Battle_RefreshMPCosts
+    // Battle: When opening the Magic SubMenu, show spell MP costs and disable if necessary
+
     // invokers: BattleManager
     static List<BattleManager> invokers_Battle_RefreshMPCosts = new List<BattleManager>();
     // listeners: DamageDisplays, BattleEnemys, BattleHero?
@@ -226,7 +254,7 @@ public class EventManager
 
     #endregion Battle_RefreshMPCosts
 
-    /*#region Battle_DisplayDamageEnd
+    /*#region Battle_DisplayDamageEnd (Unused)
     // invokers: DamageDisplays
     static List<DamageDisplay> invokers_Battle_DisplayDamageEnd = new List<DamageDisplay>();
     // listeners: BattleManager
@@ -254,6 +282,8 @@ public class EventManager
     #endregion*/
 
     #region Battle_EnemyDeathBegin
+    // Battle: When an enemy reach 0 HP, signals the start of an enemy's death fadeout
+
     // invokers: BattleManager
     static List<BattleManager> invokers_Battle_EnemyDeathBegin = new List<BattleManager>();
     // listeners: EnemyDeath
@@ -281,6 +311,8 @@ public class EventManager
     #endregion
 
     #region Battle_EnemyDeathEnd
+    // Battle: When an enemy has faded out completely from death, remove it from the scene
+
     // invokers: EneyDeath
     static List<EnemyDeath> invokers_Battle_EnemyDeathEnd = new List<EnemyDeath>();
     // listeners: BattleManager
@@ -308,6 +340,8 @@ public class EventManager
     #endregion
 
     #region Battle_AddCoins
+    // Battle: Adds coins to the bank when the coin arrives.
+
     // invokers: CoinSpawn
     static List<CoinSpawn> invokers_Battle_AddCoins = new List<CoinSpawn>();
     // listener: BattleManager
@@ -335,6 +369,8 @@ public class EventManager
     #endregion
 
     #region Shop_AdjustPurchaseAmount
+    // Shop: The user has adjusted the quantity of a desired item. Update the display.
+
     // invokers: ShopPanel
     static List<ShopPanel> invokers_Shop_AdjustPurchaseAmount = new List<ShopPanel>();
     // listener: ShopMenuMonitor
@@ -362,6 +398,8 @@ public class EventManager
     #endregion
 
     #region Shop_MakePurchase
+    // Shop: The user has pressed "Buy". Add the items from the cart to the party inventory and deduct gold
+
     // invoker: ShopMonitor
     static ShopMonitor invoker_Shop_MakePurchase;
     // listeners: ShopPanels
@@ -389,6 +427,8 @@ public class EventManager
     #endregion
 
     #region Battle_InvSelect
+    // Battle: The user selects or deselects an item in the battle inventory menu
+
     // invokers: BattleInvPanel
     static List<BattleInvPanel> invokers_Battle_InvSelect = new List<BattleInvPanel>();
     // listeners: BattleInvPanels, BattleInventoryManager
@@ -416,6 +456,8 @@ public class EventManager
     #endregion
 
     #region Battle_SubMenuSelection
+    // Battle: One of the various SubMenus is opened.
+
     // invokers: BattleSubMenu
     static List<BattleSubMenu> invokers_Battle_SubMenuSelection = new List<BattleSubMenu>();
     // listeners: BattleManager
@@ -443,6 +485,8 @@ public class EventManager
     #endregion
 
     #region Battle_UIEnabler
+    // Enables or disables UI elements, for example, during an enemy turn
+
     // invokers: UIEnabler
     static List<UIEnabler> invokers_Battle_UIEnabler = new List<UIEnabler>();
     // listeners: UIEnabler
@@ -470,6 +514,8 @@ public class EventManager
     #endregion
 
     #region Equip_InvSelect
+    // On the Equip menu, a panel has been selected or deselected. Updates the display
+
     // invokers: BattleInvPanel
     static List<EquipMenuPanel> invokers_Equip_InvSelect = new List<EquipMenuPanel>();
     // listeners: BattleInvPanels, BattleInventoryManager
@@ -498,6 +544,9 @@ public class EventManager
     #endregion
 
     #region Inventory_Select
+    // When looking at an inventory, an item is selected or deselected. Updates the display.
+    // Index, display string
+
     // invokers: InventoryPanel
     static List<InventoryPanel> invokers_Inventory_Select = new List<InventoryPanel>();
     // listeners: InventoryPanels, InventoryMenuMonitor
@@ -526,6 +575,8 @@ public class EventManager
     #endregion
 
     #region PanelSelect
+    // A generic panel select/deselect event, such as the ManageParty menu.
+
     // invokers: PanelSelection
     static List<PanelSelection> invokers_PanelSelect = new List<PanelSelection>();
     // listeners: FileMenuMonitor, PanelSelections
@@ -553,6 +604,8 @@ public class EventManager
     #endregion
 
     #region Confirmation
+    // Used for Confirmation dialogs
+
     // invokers: Confirmation
     static List<Confirmation> invokers_Confirmation = new List<Confirmation>();
     // listeners: FileMenuMonitors

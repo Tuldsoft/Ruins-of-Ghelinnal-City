@@ -2,81 +2,92 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Generates a List (more like a Queue) of turns. Its most frequent use is to tell BattleManager
+/// and other classes whose turn it is, using battleID. It also generates the turns themselves,
+/// and adds more as necessary. When an enemy is destroyed, TurnCounter will remove that enemy's
+/// turns from the queue, and recalculate IDs.
+/// The current turn is always turn[0].
+/// REFACTOR: Use a struct or in-line class definition instead of parallel lists.
+/// REFACTOR: Try creating as a LinkedList.
+/// REFACTOR: Convert generic objs objects to Battler objects.
+/// </summary>
+
 public static class TurnCounter 
 {
-    
+    #region Fields and Properties
+    // Total number of turns that have occured in this battle (unused)
     static int totalTurns = 0;
     public static int TotalTurns { get { return totalTurns; } }
 
-    //static int currentID = -1;
+    // returns BattleID of ther current turn
     public static int CurrentID { get { return turns[0]; } }
 
+    // returns a battleID of the current turn as a BattleHero partyID
     public static int CurrentHeroID { get { return -turns[0] - 1; } }
 
-    // returns the battleID
-    //static int nextID = 0;
+    // returns the battleID of the next turn
     public static int NextID { get { return turns[1]; } }
 
-    // stores BattleHero and BattleEnemy objs
-    static List<object> objTurns = new List<object>();
+    
+    // Stores BattleHero and BattleEnemy objs, parallel to turns
+    static List<object> objTurns = new List<object>();    // ex: {Edgar, Sabin, Wererat, Edgar, Sabin}
 
-    // stores a single iteration of all objs to be copied into objTurns
-    static List<object> objSequence = new List<object>();
+    // Stores a single iteration of all objs to be copied into objTurns. Each combatant appears once.
+    static List<object> objSequence = new List<object>(); // ex: {Edgar, Sabin, Wererat}
 
-    static List<int> turns = new List<int>();
-    //public static List<int> Turns { get { return turns; } }
+    // Stores turns as a list of battleIDs
+    static List<int> turns = new List<int>();             // ex: { -2, -1, 0, -2, -1}
 
-    // key is origID, value is battleID
-    static Dictionary<int, int> origIDToBattleID = new Dictionary<int, int>();
-
+    // References to BattleLoader's enemy and hero partys
     static EnemyParty enemyParty;
     static HeroParty heroParty;
+    #endregion
 
+    #region Static Methods
+    /// <summary>
+    /// Called only once at the start of battle, this will generate the objSequence at 
+    /// random, where each  combatant occurs exactly once. It does not generate the turns 
+    /// themselves, except through a call to GenerateMoreTurns().
+    /// </summary>
+    /// <param name="heroes">the HeroParty in BattleLoader</param>
+    /// <param name="enemies">the EnemyParty in BattleLoader</param>
     public static void GenerateFirstTurns(HeroParty heroes, EnemyParty enemies)
     {
+        // Clear from previous battles
         objSequence.Clear();
         objTurns.Clear();
         turns.Clear();
-        //origIDToBattleID.Clear();
 
+        // Store provided references
         heroParty = heroes;
         enemyParty = enemies;
         
-        // generate a sequence
+        // Generate a sequence in order
         foreach (BattleHero hero in heroParty.Hero)
         {
             objSequence.Add(hero);
-            //objTurns.Add(hero);
-            //turns.Add(hero.BattleID);
         }
         foreach (BattleEnemy enemy in enemyParty.Enemies)
         {
             objSequence.Add(enemy);
-            //objTurns.Add(enemy);
-            //turns.Add(enemy.BattleID);
         }
 
+        // Use custom Randomize class to randomize the sequence of objects
         objSequence = Randomize<object>.List(objSequence);
 
+        // Generate turns using objSequence as a key
         GenerateMoreTurns();
-        /*currentID = Turns[0];
-        nextID = Turns[1];*/
     }
 
+    /// <summary>
+    /// Called at the end of GenerateFirstTurns() and any time turns are running low,
+    /// this adds a single iteration of objSequence to the back of objTurns. It keeps turns
+    /// and objTurns in parallel.
+    /// </summary>
     static void GenerateMoreTurns()
     {
-        /*foreach (BattleHero hero in heroParty.Hero)
-        {
-            objTurns.Add(hero);
-            turns.Add(hero.BattleID);
-        }
-        foreach (BattleEnemy enemy in enemyParty.Enemies)
-        {
-            objTurns.Add(enemy);
-            turns.Add(enemy.BattleID);
-        }*/
-
-        // adds to the turn sequence in both objTurns and turns, based on randomized objSequence
+        // Adds to the turn sequence in both objTurns and turns, based on randomized objSequence
         foreach (object obj in objSequence)
         {
             objTurns.Add(obj);
@@ -90,16 +101,17 @@ public static class TurnCounter
                 turns.Add((obj as BattleEnemy).BattleID);
             }
         }
-
     }
 
+    // If a hero or enemy dies, battleIDs need to be refreshed in TurnCounter
+    // so that the destroyed object can no longer be referenced
     public static void RefreshIDs()
     {
-        // clear the list of ints, because battleIDs have changed
+        // Clear ints in turns, because battleIDs have changed
         turns.Clear();
 
-        // remove any dead objs from objTurns, 
-        // working backwards so that nothing is skipped over
+        // Remove any dead objs from objTurns, 
+        // working BACKWARDS so that nothing is skipped over
         for (int i = objTurns.Count-1; i >= 0; i--)
         { 
             if (objTurns[i] is BattleHero)
@@ -118,28 +130,7 @@ public static class TurnCounter
             }
         }
 
-        // remove dead obj from objSequence (there should only be one)
-        /*for (int i = objSequence.Count - 1; i >= 0; i--)
-        {
-            if (objSequence[i] is BattleHero)
-            {
-                if ((objSequence[i] as BattleHero).IsDead)
-                {
-                    objSequence.RemoveAt(i);
-                    break;
-                }
-            }
-            else if (objSequence[i] is BattleEnemy)
-            {
-                if ((objSequence[i] as BattleEnemy).IsDead)
-                {
-                    objSequence.RemoveAt(i);
-                    break;
-                }
-            }
-        }*/
-
-        // remove dead obj from objSequence (there should only be one)
+        // Remove dead obj from objSequence (there is only one)
         foreach (object obj in objSequence)
         {
             if (obj is BattleHero)
@@ -160,7 +151,7 @@ public static class TurnCounter
             }
         }
 
-        // repopulate the turns list, using the updated objTurns
+        // Repopulate the turns list of BattleIDs, using the updated objTurns
         foreach (object obj in objTurns)
         {
             if (obj is BattleHero)
@@ -173,25 +164,27 @@ public static class TurnCounter
             }
         }
 
-        // copy additional turns from the sequence if there's not a current and next.
+        // Generate additional turns from the sequence if there's not a current and next.
         if (objTurns.Count < 2) { GenerateMoreTurns(); }
-
     }
 
+    // Advances the TurnCounter to the next turn. Used only in BattleManager.TurnOver()
     public static void AdvanceToNextTurn()
     {
+        // Remove current turn
         objTurns.RemoveAt(0);
         turns.RemoveAt(0);
+
+        // Now currentTurn = the new turn[0] and nextTurn = the new turn[1]
+        
+        // If there's fewer than 2 turns, add more turns
         if (objTurns.Count < 2)
         {
             GenerateMoreTurns();
         }
-        /*else
-        {
-            currentID = origIDToBattleID[Turns[0]];
-            nextID = origIDToBattleID[Turns[1]];
-        }*/
+        
+        // Increase the counter of total turns during this battle
         totalTurns++;
     }
-
+    #endregion
 }

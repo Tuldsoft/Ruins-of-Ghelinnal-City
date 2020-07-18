@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// An enumeration of the kinds of potions, tomes, weapons, and armor
 public enum InvSubtype
 {
     Health,

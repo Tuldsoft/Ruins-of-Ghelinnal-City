@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Creates SaveSlot##.RoGC in persistentDataPath/
+/// <summary>
+/// A Serializable container class used by FileUtil to create a file (SaveSlot##.RoGC) 
+/// in persistentDataPath/. Includes methods for collecting and exporting data.
+/// </summary>
 
 [System.Serializable]
 public class SaveFile
 {
-
+    #region Fields
     // SaveFile unique variables
     int? saveSlot = null;
     public int? SaveSlot { get { return saveSlot; } }
@@ -47,33 +50,17 @@ public class SaveFile
     List<InvNames> hero2EquipmentNames = new List<InvNames>();
     List<InvNames> hero3EquipmentNames = new List<InvNames>();
     List<InvNames> hero4EquipmentNames = new List<InvNames>();
+    #endregion
 
-    /*List<int> baseHPMax = new List<int>();
-    List<int> hpMax = new List<int>();
-    List<int> baseMPMax = new List<int>();
-    List<int> mpMax = new List<int>();
-
-    List<int> strength = new List<int>();
-    List<int> defense = new List<int>();
-    List<int> magic = new List<int>();
-    List<int> resistance = new List<int>();
-
-    List<int> stamina = new List<int>();
-    List<int> agility = new List<int>();
-    List<int> baseHit = new List<int>();
-    List<int> hitPercent = new List<int>();
-    List<int> baseEvade = new List<int>();
-    List<int> evadePercent = new List<int>();
-    List<int> critChance = new List<int>();*/
-
-
-    // Constructor
+    #region Constructor
+    // Constructor only specifies the slot. The rest is handled by SaveData()
     public SaveFile(int slot)
     {
         saveSlot = slot;
     }
+    #endregion
 
-
+    #region Methods
     // Gathers and saves data from BattleLoader for reconstruction later
     public void SaveData ()
     {
@@ -148,6 +135,8 @@ public class SaveFile
         }
     }
 
+    // Takes the values stored internally (as created when loaded by FileUtil)
+    // and propogates them throughout the game (BattleLoader and Shop)
     public void LoadData()
     {
         // Global vars
@@ -214,25 +203,27 @@ public class SaveFile
                 BattleLoader.Party.Hero[3].Equipment.AddInvItem(item, 1);
             }
         }
-
-        
     }
 
+    // Creates a summary string of the SaveFile, for use on buttons when saving in 
+    // the FileMenu, and as the value for this slot's key in PlayerPrefs
     public override string ToString()
     {
         string saveString = "";
 
+        // Name all heroes
         foreach (string name in heroFullNames)
         {
             saveString += name + ", ";
         }
 
+        // Show gold
         saveString += partyGold + " Gold, ";
+        
+        // Imprint time onto file
         saveString += System.DateTime.Now.ToString("MMMM dd, yyyy, HH:mm");
 
         return saveString;
     }
-
-
-
+    #endregion
 }

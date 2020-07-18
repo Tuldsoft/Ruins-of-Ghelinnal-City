@@ -4,23 +4,33 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// A timer
+/// This EventTimer object is used extensively throughout the project. Its origin is from a
+/// course in C# and Unity from Coursera. This adaptation of it includes Event management, such
+/// that when the timer is completed, it triggers a localized event, heard only to the script it
+/// was instantiated in. That allows a script to cause a method of its choosing to execute after
+/// a certain period of time.
+/// This functionality largely duplicates coroutine-timed "Yield" keywords. At a later date,
+/// many such timers should be replaced by coroutines, as Unity would like to deprecate the
+/// Event system that this timer relies on.
+/// Its "tick" system is unused in RoGC, but was used in another project.
+/// It has a "Retry" feature, where if an invocation did not have the desired effect, the 
+/// timer can be told to re-invoke the same method in the next frame.
 /// </summary>
 public class EventTimer : MonoBehaviour
 {
 	#region Fields
 	
-	// timer duration
+	// Timer duration
 	float totalSeconds = 0;
 
-    // interval to "tick"
+    // Interval to "tick" in seconds, unused in RoGC
     float tickInterval = 1f;
     bool isUsingTick = false;
 	
-	// timer execution
-	float elapsedSeconds = 0;
+	// Timer execution
+	float elapsedSeconds = 0; 
 	bool running = false;
-    bool retry = false;
+    bool retry = false;       // whether or not the current invocation is a "retry" attempt
 
     // support for countdown seconds values
     int previousCountdownValue;
@@ -28,18 +38,18 @@ public class EventTimer : MonoBehaviour
     // support for Finished property
     bool started = false;
 
+    // Localized Event Management - does not use an Event Manager
     TimerFinishedEvent finishEvent = new TimerFinishedEvent();
-    TimerTickEvent tickEvent = new TimerTickEvent();
+    TimerTickEvent tickEvent = new TimerTickEvent();            // tickEvents are not implemented in RoGC
 
 	#endregion
-	
 
 	#region Properties
 	
 	/// <summary>
-	/// Sets the duration of the timer
-	/// The duration can only be set if the timer isn't currently running
-    /// To add duration, use the AddTime() method
+	/// Sets the duration of the timer.
+	/// The duration can only be set if the timer isn't currently running.
+    /// To add duration, use the AddTime() method.
 	/// </summary>
 	/// <value>duration</value>
 	public float Duration
@@ -53,7 +63,7 @@ public class EventTimer : MonoBehaviour
 		}
 	}
     /// <summary>
-    /// Sets the interval of the Tick events
+    /// Sets the interval of the Tick events (unused in RoGC)
     /// </summary>
     public float TickInterval 
     {
@@ -67,7 +77,7 @@ public class EventTimer : MonoBehaviour
         }
     }
 	
-    // keep elapsed seconds available
+    // Make elapsed seconds available for viewing
     public float ElapsedSeconds
     {
         get { return elapsedSeconds; }
@@ -92,7 +102,7 @@ public class EventTimer : MonoBehaviour
 		get { return running; }
 	}
 
-    // Retrieves the tick object, so that it does not have to be stored locally
+    // Retrieves the tick object, so that it does not have to be stored locally, unused in RoGC
     public TimerTickEvent TickEvent { get { return tickEvent; } }
 
     #endregion
@@ -105,12 +115,12 @@ public class EventTimer : MonoBehaviour
     /// </summary>
     void Update()
     {	
-		// update timer and check for finished
+		// Update timer and check for finished
 		if (running)
         {
 			elapsedSeconds += Time.deltaTime;
 
-            if (isUsingTick)
+            if (isUsingTick) // unused in RoGC
             {
                 // check for new countdown value
                 int newCountdownValue = GetCurrentCountdownValue();
@@ -129,20 +139,21 @@ public class EventTimer : MonoBehaviour
             }
 		}
         
+        // if this was a retry attempt, disable a retry on the next frame.
         if(retry) { finishEvent.Invoke(); retry = false; }
 
 	}
 	
 	/// <summary>
-	/// Runs the timer
+	/// Runs the timer.
 	/// Because a timer of 0 duration doesn't really make sense,
-	/// the timer only runs if the total seconds is larger than 0
+	/// the timer only runs if the total seconds is larger than 0.
 	/// This also makes sure the consumer of the class has actually 
-	/// set the duration to something higher than 0
+	/// set the duration to something higher than 0.
 	/// </summary>
 	public void Run()
     {	
-		// only run with valid duration
+		// Only run with valid duration
 		if (totalSeconds > 0)
         {
 			started = true;
@@ -151,7 +162,7 @@ public class EventTimer : MonoBehaviour
 		}
 	}
 
-    // Returns the number of "ticks" remaining (default seconds, round up)
+    // Returns the number of "ticks" remaining (default seconds, round up), unused in RoGC
     int GetCurrentCountdownValue()
     {
         return (int)Mathf.Ceil((totalSeconds - elapsedSeconds) / tickInterval);
@@ -168,12 +179,13 @@ public class EventTimer : MonoBehaviour
         totalSeconds += seconds;
     }
 
+    // Invokes its finished method in the very next frame (Update() )
     public void Retry()
     {
         retry = true;
     }
 
-    // Stops the timer
+    // Stops the timer, preventing the Finished invocation. Does not change remaining duration.
     public void Stop()
     {
         started = false;
@@ -183,7 +195,7 @@ public class EventTimer : MonoBehaviour
 
     #region Listener Methods
     /// <summary>
-    /// Adds the given event handler as a listener
+    /// Adds the given event handler as a listener to this invoker
     /// </summary>
     /// <param name="handler">the event handler</param>
     public void AddListener_Tick(UnityAction<int> handler)
@@ -192,15 +204,12 @@ public class EventTimer : MonoBehaviour
     }
 
     /// <summary>
-    /// Adds the given event handler as a listener
+    /// Adds the given event handler as a listener to this invoker
     /// </summary>
     /// <param name="handler">the event handler</param>
     public void AddListener_Finished(UnityAction handler)
     {
         finishEvent.AddListener(handler);
     }
-
-    
-
 	#endregion
 }

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Attached to a prefabBattleSubMenu. Includes methods for On_Click() methods, and
+/// invokes a subMenuSelection event to tell the BattleManager what choice was selected.
+/// </summary>
 public class BlitzSubMenu : BattleSubMenu
 {
     BattleMode mode = BattleMode.Blitz_Kick;

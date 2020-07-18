@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// This makes a GameObject "pulse" when the mouse hovers over it.
-// Currently used on the StartButton GameObject
+// This makes a GameObject "pulse" when the mouse hovers over it. Created for another project.
+// Currently used on battle enemy sprites to help identify them as clickable. Requires a collider.
+
 public class PulseResizer : MonoBehaviour
 {
-
     // Support for mouseover resizing
     //[SerializeField]
     float resizeCycleDuration = 0.35f;
@@ -21,34 +21,30 @@ public class PulseResizer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // This Vector3 variable needs to be defined, for later use in OnMouseExit()
+        // Store original sclae for later use in OnMouseExit()
         objectOriginalScale = transform.localScale;
-
     }
 
-    // To let you know an object something, I have it pulse
-    // when you move you mouse over it.
+    // When the mouse moves over the collider, begin pulsing
     void OnMouseOver()
     {
-            
-        // This is based on the teddybear resizing exercise
+        // Calculate amount of size to add
         float addSize = scaleFactorSignMultiplier * scaleFactorPerSecond * Time.deltaTime;
 
-        // Resizes the object.
+        // Resize the object by adjusting localScale
         transform.localScale = new Vector3(transform.localScale.x + addSize,
             transform.localScale.y + addSize, 1);
 
-        // Adds to time
+        // Add to time
         elapsedResizeSeconds += Time.deltaTime;
 
-        // Reverses the growth / shrinkage, cyclically
+        // Reverse the growth / shrinkage, cyclically by time
         if (elapsedResizeSeconds > resizeCycleDuration 
             || transform.localScale.x < objectOriginalScale.x )
         {
             scaleFactorSignMultiplier *= -1;
             elapsedResizeSeconds = 0;
         }
-        
     }
 
     /// <summary>
@@ -60,14 +56,6 @@ public class PulseResizer : MonoBehaviour
         transform.localScale = objectOriginalScale;
         // Start the next OnMouseOver() with growth.
         scaleFactorSignMultiplier = 1;
-
     }
-
-    
-    private void Update()
-    {
-        
-    }
-
 
 }

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Provides methods to randomize either a list or an array of type T
+// Provides methods to randomize either a list or an array of type T. Uses the UnityEngine RNG.
 public static class Randomize<T>
 {
     
     // Output the incoming array as an array in random order
     public static T[] Array(T[] objs)
     {
-        // create a list of numbers from 0 to the length of the orig array
+        // Create a list of numbers from 0 to the length of the orig array
         List<int> origIndexes = new List<int>();
         for (int i = 0; i < objs.Length; i++)
         {

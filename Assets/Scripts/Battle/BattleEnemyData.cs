@@ -3,30 +3,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Initializes and stores data for each kind of enemy
+/// </summary>
 public static class BattleEnemyData 
 {
+    #region Fields and Properties
+    // enemyData is populated when constructed
     static ConfigData enemyData;
     
+    // stores the data constructed in enemyData
     public static Dictionary<EnemyName, BattleEnemy> Data { get; } 
         = new Dictionary<EnemyName, BattleEnemy>();
 
     static bool initialized = false;
+    #endregion
 
+    #region Methods
+    /// <summary>
+    /// Initializes BattleEnemyData. Called by the Initializer.
+    /// </summary>
     public static void Initialize()
     {
         if (!initialized)
         {
             initialized = true;
 
+            // Construct enemyData by loading it from the csv
             enemyData = new ConfigData(ConfigDataType.EnemyData);
 
+            // Store data in Data
             foreach (KeyValuePair<EnemyName,BattleStats> pair in enemyData.EnemyStatData)
             {
                 Data.Add(pair.Key, new BattleEnemy(pair.Key, pair.Value));
             }
 
             #region OldData
-            /*EnemyName name;
+            /*
+            // information here moved to ConfigData
+            
+            EnemyName name;
             BattleStats stats = new BattleStats();
 
             // hp, mp, minDam, maxDam, minReward, maxReward
@@ -124,16 +140,19 @@ public static class BattleEnemyData
         }
     }
 
+    /// <summary>
+    /// Creates a new BattleEnemy and gives it its data
+    /// </summary>
+    /// <param name="name">Name as EnemyName</param>
+    /// <returns></returns>
     public static BattleEnemy MakeNewBattleEnemy(EnemyName name)
     {
-        
+        // Create data
         BattleEnemy orig = Data[name];
-        /*BattleEnemy newEnemy = new BattleEnemy(name, 
-            orig.HPMax, orig.MPMax, orig.MinDamage, orig.MaxDamage, orig.MinReward, orig.MaxReward);*/
-        //BattleEnemy newEnemy = new BattleEnemy(name, orig.Stats, orig.MinReward, orig.MaxReward);
+        // Create enemy using data
         BattleEnemy newEnemy = new BattleEnemy(name, orig.Stats);
         newEnemy.HealAll();
         return newEnemy;
     }
-
+    #endregion
 }

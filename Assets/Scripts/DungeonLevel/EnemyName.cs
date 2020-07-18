@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// An enumeration of all enemies in the game, either in the dungeon or in battle
+/// </summary>
 public enum EnemyName 
 {
     none,

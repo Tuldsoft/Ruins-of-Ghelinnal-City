@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
+// An enumeration of MenuName options, for use with MenuManager
 public enum MenuName
 {
     MainToTown,

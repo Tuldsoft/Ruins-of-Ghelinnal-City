@@ -3,44 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Attached to the prefabGameOverMenu, which either brings the player back to town or
+/// back to the dungeon level. GameOver accomodates Win, BossWin, and Death.
+/// </summary>
 public class GameOverMonitor : MonoBehaviour
 {
+    #region Fields
+    // Image of victory pose or death or kick
     [SerializeField]
     Image heroImage = null;
 
+    // Label displaying party gold 
     [SerializeField]
     Text earningsText = null;
 
+    // OK button
     [SerializeField]
     Text confirmButton = null;
+    #endregion
 
+    #region Methods
+    // Start() is called before the first frame update
     private void Start()
     {
+        // Do not pause so that coins continue being cashed in
         // pause the game as soon as the object is added to the scene
         //Time.timeScale = 0;
 
-        //EventManager.AddListener_Battle_AddCoins(AddCoins);
-
+        // Message to display and its color
         string message;
         Color color;
 
-        // death
+        // Death (Battle or Dungeon)
         if (BattleLoader.GameOver == GameOver.Death)
         {
             heroImage.sprite = BattleLoader.Party.Hero[0].Sprites.Dead;
-            //BattleLoader.Party.Gold = Mathf.CeilToInt(BattleLoader.Party.Gold / 2);
             message = BattleLoader.Party.Hero[0].FullName + "'s party has died." +
                     "\n \n The werebears will resurrect you at the temple, using half of your gold.";
             color = Color.red;
         }
         else
         {
-            
             if (BattleLoader.GameOver == GameOver.Win)
             {
-                // Win
+                // Ragular Win
                 heroImage.sprite = (BattleLoader.Party.Hero[0].Sprites as SabinSprites).Kick;
-                //Time.timeScale = 0;
                 message = BattleLoader.Party.Hero[0].FullName + "'s party has defeated the " +
                     BattleLoader.BattleParty.ToString().Replace("_", " ") + "!!";
                 color = Color.green;
@@ -51,14 +59,14 @@ public class GameOverMonitor : MonoBehaviour
                 // Boss Win
                 heroImage.sprite = BattleLoader.Party.Hero[0].Sprites.Victory; 
                 
-                if (BattleLoader.DungeonLevel == 7)
+                if (BattleLoader.DungeonLevel == 7) // Game win if Dungeon 7 complete
                 {
                     message = BattleLoader.Party.Hero[0].FullName + "'s party has defeated the " +
                     BattleLoader.BattleParty.ToString().Replace("_", " ") + "!!" +
                     "\n \n You've won the game! Head back to town to read the remaining story." +
                     " The shop is completely open to you now.";
                 }
-                else
+                else // Back to town
                 {
                     message = BattleLoader.Party.Hero[0].FullName + "'s party has defeated the " +
                     BattleLoader.BattleParty.ToString().Replace("_", " ") + "!!" +
@@ -67,14 +75,15 @@ public class GameOverMonitor : MonoBehaviour
                 
                 color = Color.green;
 
+                // Increase access level for next dungeon delve
                 if (BattleLoader.DungeonLevel >= BattleLoader.DungeonLevelAccess)
                 {
                     BattleLoader.DungeonLevelAccess++; // this is clamped by BattleLoader.maxDungeonLevel
                 }
             }
-            
         }
         
+        // Retrieve label
         Text[] findGameOverText = gameObject.GetComponentsInChildren<Text>();
         for (int i = 0; i < findGameOverText.Length - 1; i++)
         {
@@ -85,30 +94,30 @@ public class GameOverMonitor : MonoBehaviour
             }
         }
 
+        // Set display text
         earningsText.text = BattleLoader.BattleEarnings.ToString();
-
     }
 
+    // Called once per frame
     private void Update()
     {
+        // Continue updating earning while coins are still flying in battle scene
         earningsText.text = BattleLoader.BattleEarnings.ToString();
     }
 
-    /*void AddCoins(int coins)
-    {
-        BattleLoader.BattleEarnings += coins;
-        earningsText.text = BattleLoader.BattleEarnings.ToString();
-    }*/
-
+    // Called by the only available button, On_Click()
     public void Click_Confirm()
     {
         AudioManager.Close(); 
         
         // unpause the game, destroy this menu, go to town menu
-        Time.timeScale = 1;
+        Time.timeScale = 1; // time is no longer paused, but just in case
         Destroy(gameObject);
 
+        // Add earning gold from a battle to party 
         BattleLoader.Party.Gold += BattleLoader.BattleEarnings;
+        
+        // Go to next thing
         if (BattleLoader.GameOver == GameOver.BossWin)
         {
             MenuManager.GoToMenu(MenuName.BattleToTown);
@@ -127,10 +136,5 @@ public class GameOverMonitor : MonoBehaviour
 
         
     }
-
-    /*public void Click_Quit()
-    {
-        AudioManager.Close(); 
-        MenuManager.GoToMenu(MenuName.Quit);
-    }*/
+    #endregion
 }

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Provides screen utilities
+/// Provides screen utilities. Currently unused, as it was unreliable for scenes greater than
+/// one camera width or height.
 /// </summary>
 public static class ScreenUtils
 {

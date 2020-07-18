@@ -4,16 +4,29 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// A static class for managing the travel between menus, so that one menu scene or prefab does
+/// does not need to store a reference to the next item.
+/// REFACTOR: Create a "Menu Stack" to track which menus are coming from where. Provide a "Close Menu"
+/// class that destroys the current menu prefab and enables the previous menu, so that classes don't 
+/// need to store that info through "Set"methods. 
+/// REFACTOR: Provide an alternate GoToMenu(MenuName choice, int? index) that provides a means to 
+/// pass a single int, such as a hero ID or item, etc.
+/// REFACTOR: Provide an alternate GoToMenu(MenuName choice, bool boolean) that provides a means to 
+/// pass a single bool (ex FileMenu, ChangeMusic, etc.)
+/// </summary>
 public static class MenuManager
 {
+    // Used choosing which dungeonLevel to load or reload
     static int dungeonLevel = 1;
 
+    // Switchboard for most menu transitions
     public static void GoToMenu(MenuName choice)
     {
         switch (choice)
         {
             case MenuName.MainToTown:
-                
+                // Load the Town menu (but only from the Main Menu)                
                 if (SceneManager.GetActiveScene().name == "MainMenu")
                 {
                     AudioManager.PlayMusic(AudioClipName.Music_Kids_Run_Through_The_City);
@@ -24,86 +37,82 @@ public static class MenuManager
                 break;
 
             case MenuName.Load:
-                // Called from MainMenu, Town
-                // instantiate the prefab Load menu
-                // Object.Instantiate(Resources.Load("prefabLoadMenu"));
-
-                SceneManager.LoadScene("Town"); // remove later
+                // Show the FileMenu as a Load menu, called from Main Menu and from Town
+                SceneManager.LoadScene("Town");
                 break;
 
             case MenuName.MainOptions:
-                // instantiate the prefab Options menu
+                // Show the Options menu, called from Main Menu
                 Object.Instantiate(Resources.Load(@"MenuPrefabs\prefabOptionsMenu"));
                 break;
 
             case MenuName.About:
-                // instantiate the prefab About menu
+                // Show the About menu, called from Main Menu
                 Object.Instantiate(Resources.Load(@"MenuPrefabs\prefabAboutMenu"));
                 break;
 
             case MenuName.Help:
-                // Called from MainMenu, Pause
-
-                // instantiate the prefab Help Menu
+                // Show the Help menu, called from Main Menu and Help
                 Object.Instantiate(Resources.Load(@"MenuPrefabs\prefabHelpMenu"));
                 break;
 
             case MenuName.Quit:
-                // Called from MainMenu, Town, Pause
-
+                // Closes the entire application, called from Main Menu or pause menu
                 Application.Quit();
                 Debug.Log("You have quit the game.");
                 break;
 
             case MenuName.TownTalk:
-                // instantiate the prefab Talk dialog box
+                // Shows the Talk Menu, called from Town
                 Object.Instantiate(Resources.Load(@"MenuPrefabs\prefabTalkMenu"));
                 break;
 
             case MenuName.TownShop:
-                // instantiate the prefab Shop Menu
+                // Shows the Shop menu, called from Town
                 Object.Instantiate(Resources.Load(@"MenuPrefabs\prefabShopMenu"));
                 break;
 
             case MenuName.TownSave:
-                // instantiate the prefab Save Menu
+                // not longer used. See GoToFileMenu()
                 // Object.Instantiate(Resources.Load("prefabShopMenu"));
                 break;
 
             case MenuName.TownReturnToMain:
+                // Shows the Main Menu, from Town
                 SceneManager.LoadScene("MainMenu");
                 break;
 
             case MenuName.TownExploreRuins:
+                // Show the Dungeon selection menu, from Town
                 SceneManager.LoadScene("Dungeon");
                 break;
 
             case MenuName.DungeonLevel:
+                // Loads a DungeonLevel scene
                 SceneManager.LoadScene("DungeonLevel" + dungeonLevel);
-                // battleloader load level (level)
                 break;
 
             case MenuName.DungeonTown:
-                // no change in audio if coming from dungeon selection
-                
-                
-
+                // Loads the Town scene from the Dungeon selection screen
+                // No change in audio if coming from dungeon selection
                 SceneManager.LoadScene("Town");
                 break;
 
             case MenuName.Battle:
+                // Loads a Battle scene from a DungeonLevel. BattleLoader handles the rest.
                 SceneManager.LoadScene("Battle");
                 break;
 
             case MenuName.BattleToTown:
+                // Loads the Town menu from Battle or from Dungeon (through a GameOver)
                 SceneManager.LoadScene("Town");
-                //SceneManager.UnloadSceneAsync("Battle");
-                //SceneManager.UnloadSceneAsync("DungeonLevel" + dungeonLevel);
                 AudioManager.PlayMusic(AudioClipName.Music_Kids_Run_Through_The_City);
                 dungeonLevel = 1;
                 break;
 
             case MenuName.Pause:
+                // Show a Pause menu. Called from DungeonLevel by pressing Esc.
+                // GameOver can be considered a "Pause Menu". If not null, then a GameOver is being displayed
                 if (BattleLoader.GameOver == null)
                 {
                     Object.Instantiate(Resources.Load(@"MenuPrefabs\prefabPauseMenu"));
@@ -111,12 +120,15 @@ public static class MenuManager
                 break;
 
             case MenuName.GameOver:
+                // Show a GameOver menu, one of three varieties. Called at death or end of battle
                 Object.Instantiate(Resources.Load(@"MenuPrefabs\prefabGameOverMenu"));
                 break;
 
             case MenuName.ManageParty:
+                // Show a ManagePartyMenu. Called from Town or from the Pause menu
                 GameObject manageMenu = GameObject.Instantiate(
                     Resources.Load<GameObject>(@"MenuPrefabs\prefabManagePartyMenu"));
+                // Store camera for adjusting size of components
                 manageMenu.GetComponentInChildren<Canvas>().worldCamera = Camera.main;
                 break;
 
@@ -126,6 +138,7 @@ public static class MenuManager
         }
     }
 
+    // Stores dungeonLevel here and newLevel in BattleLoader, before changing scene to DungeonLevel
     public static void EnterDungeonLevel (int level, bool newLevel) 
     {
         dungeonLevel = level;
@@ -133,6 +146,7 @@ public static class MenuManager
         GoToMenu(MenuName.DungeonLevel);
     }
 
+    // Shows a FileMenu, either as a Save or a Load menu.
     public static void GoToFileMenu (bool asSave)
     {
         GameObject fileMenu = GameObject.Instantiate(

@@ -3,27 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// An explosion
+/// Attached to an explosion animated object, used both in dungeons and battles.
 /// </summary>
 public class Explosion : MonoBehaviour
 {	
-	// cached for efficiency
+	// Reference to the object's animator
 	Animator anim;
 
-    /// <summary>
-    /// Use for initialization
-    /// </summary>
+    // Start is run before the first frame update
     void Start()
     {
-		anim = GetComponent<Animator>();
+		// Store reference to the Animator
+        anim = GetComponent<Animator>();
 	}
 
-    /// <summary>
-    /// Update is called once per frame
-    /// </summary>
+    // Update is called once per frame
     void Update()
     {
-		// destroy the game object if the explosion has finished its animation
+		// Destroy the game object if the explosion has finished its animation
 		if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
         {
 			Destroy(gameObject);
