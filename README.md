@@ -52,6 +52,7 @@ The player assembles a party of up to four heroes, and outfits them with consuma
 <!-- end of the list -->
 
 ## Features To-Do
+Leave the previous list, doggonit
 - More character-specific abilites and spells.
   - Make heroes targetable by abilities (Ex. Cure) and potions.
 - More unique monster abilities and AI.
