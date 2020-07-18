@@ -48,7 +48,8 @@ The player assembles a party of up to four heroes, and outfits them with consuma
 * Give the Help menu data, rather than rely on the editor.
 * Finish typing out monster data for use as defaults.
 * Add a cheat in the shop to increase StockLevel and DungeonLevelAccess incrementally, to test balance throughout the game.
-\n\n
+
+<!-- end of the list -->
 
 ## Features To-Do
 - More character-specific abilites and spells.
@@ -68,7 +69,8 @@ The player assembles a party of up to four heroes, and outfits them with consuma
 - Implement tooltips.
 - Possibly display data about an item before purchase. It is requested, but I kind of like the gamble.
 - HUD display in dungeon of hero's condition.
-\n\n
+
+<!-- end of the list -->
 
 ## Dream Big To-Do
 * Hire an artist to create actual tile and sprite assets, rather than borrow from FF VI.
