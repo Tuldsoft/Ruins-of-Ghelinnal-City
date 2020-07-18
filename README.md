@@ -47,11 +47,7 @@ The player assembles a party of up to four heroes, and outfits them with consuma
   * Rather than individual menu objects tracking who preceded it and using methods to activate/deactive from menu to menu, use the MenuManager to track this, so individual menus don't have to track this.
 * Give the Help menu data, rather than rely on the editor.
 * Finish typing out monster data for use as defaults.
-* Add a cheat in the shop to increase StockLevel and DungeonLevelAccess incrementally, to test balance throughout the game.
-
-<a/>
-
----
+* Add a cheat in the shop to increase StockLevel and DungeonLevelAccess incrementally, to test balance throughout the game.\n\n
 
 ## Features To-Do (md lists are not cooperating )
 - More character-specific abilites and spells.
