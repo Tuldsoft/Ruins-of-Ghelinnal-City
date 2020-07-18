@@ -48,9 +48,9 @@ The player assembles a party of up to four heroes, and outfits them with consuma
 * Give the Help menu data, rather than rely on the editor.
 * Finish typing out monster data for use as defaults.
 * Add a cheat in the shop to increase StockLevel and DungeonLevelAccess incrementally, to test balance throughout the game.
-<a/>
+\n\n
 
-Features To-Do
+## Features To-Do
 - More character-specific abilites and spells.
   - Make heroes targetable by abilities (Ex. Cure) and potions.
 - More unique monster abilities and AI.
@@ -68,7 +68,7 @@ Features To-Do
 - Implement tooltips.
 - Possibly display data about an item before purchase. It is requested, but I kind of like the gamble.
 - HUD display in dungeon of hero's condition.
-<a/>
+\n\n
 
 ## Dream Big To-Do
 * Hire an artist to create actual tile and sprite assets, rather than borrow from FF VI.
