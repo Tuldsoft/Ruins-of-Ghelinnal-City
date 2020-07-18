@@ -49,6 +49,8 @@ The player assembles a party of up to four heroes, and outfits them with consuma
 * Finish typing out monster data for use as defaults.
 * Add a cheat in the shop to increase StockLevel and DungeonLevelAccess incrementally, to test balance throughout the game.
 
+---
+
 ## Features To-Do (md lists are not cooperating )
 - More character-specific abilites and spells.
   - Make heroes targetable by abilities (Ex. Cure) and potions.
