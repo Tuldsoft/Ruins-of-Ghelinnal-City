@@ -49,28 +49,24 @@ The player assembles a party of up to four heroes, and outfits them with consuma
 * Finish typing out monster data for use as defaults.
 * Add a cheat in the shop to increase StockLevel and DungeonLevelAccess incrementally, to test balance throughout the game.
 
-<br>
-
 ## Features To-Do
-* More character-specific abilites and spells.
-  * Make heroes targetable by abilities (Ex. Cure) and potions.
-* More unique monster abilities and AI.
-  * Start with monster healing.
-* System for unlocking hero abilities.
-* A TurnCounter system that incorporates Agility in the turn order.
-  * Turns shown by a modified icon queue (similar to FF X).
-  * Turn position advanced or delayed by ability used (similar to FFT, FF X).
-* Gamepad support.
-* More special FX.
-* More stuff to do in dungeon levels besides move and jump.
-  * More hazards, powerups.
-  * Arrows, boulders, bombs, other interactables.
-* Animated backgrounds for menus and dungeons, werebear and town artwork.
-* Implement tooltips.
-* Possibly display data about an item before purchase. It is requested, but I kind of like the gamble.
-* HUD display in dungeon of hero's condition.
-
-<br>
+- More character-specific abilites and spells.
+  - Make heroes targetable by abilities (Ex. Cure) and potions.
+- More unique monster abilities and AI.
+  - Start with monster healing.
+- System for unlocking hero abilities.
+- A TurnCounter system that incorporates Agility in the turn order.
+  - Turns shown by a modified icon queue (similar to FF X).
+  - Turn position advanced or delayed by ability used (similar to FFT, FF X).
+- Gamepad support.
+- More special FX.
+- More stuff to do in dungeon levels besides move and jump.
+  - More hazards, powerups.
+  - Arrows, boulders, bombs, other interactables.
+- Animated backgrounds for menus and dungeons, werebear and town artwork.
+- Implement tooltips.
+- Possibly display data about an item before purchase. It is requested, but I kind of like the gamble.
+- HUD display in dungeon of hero's condition.
 
 ## Dream Big To-Do
 * Hire an artist to create actual tile and sprite assets, rather than borrow from FF VI.
