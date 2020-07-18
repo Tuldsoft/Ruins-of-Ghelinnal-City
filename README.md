@@ -45,9 +45,9 @@ The player assembles a party of up to four heroes, and outfits them with consuma
   - Would contain fields for who spawned it, and who it spawned. (or see below)
 - Give MenuManager a LinkedList or Stack to track which menu prefabs are overlapping its predecessors.
   - Rather than individual menu objects tracking who preceded it and using methods to activate/deactive from menu to menu, use the MenuManager to track this, so individual menus don't have to track this.
-  - Give the Help menu data, rather than rely on the editor.
-  - Finish typing out monster data for use as defaults.
-  - Add a cheat in the shop to increase StockLevel and DungeonLevelAccess incrementally, to test balance throughout the game.
+- Give the Help menu data, rather than rely on the editor.
+- Finish typing out monster data for use as defaults.
+- Add a cheat in the shop to increase StockLevel and DungeonLevelAccess incrementally, to test balance throughout the game.
 
 ## Content To-Do
 - More character-specific abilites and spells.
@@ -76,4 +76,3 @@ The player assembles a party of up to four heroes, and outfits them with consuma
 - Publish the game on a public platform (Steam).
 - Branch out to consoles.
 - Make a little pocket change?
-  
