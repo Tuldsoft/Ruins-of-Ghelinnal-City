@@ -397,17 +397,18 @@ public class BattleManager : MonoBehaviour
                 EnemyName.Grease_Monkey,EnemyName.Cirpius, EnemyName.Poplium,EnemyName.Ninja,
                 EnemyName.Apokryphos, EnemyName.Brainpan, EnemyName.Misfit, EnemyName.Atma_Weapon };
             
-            if (poisonerList.Contains(enemy.Name) && (Random.value < 0.25f)
+            if (poisonerList.Contains(enemy.Name) && (Random.value < 0.95f) // 25% chance
                 && enemy.MP >= BattleAbilityData.Data[BattleMode.Magic_Poison].MP)
             {
                 // If Runic is active, trigger Runic animation
                 victim = TestForRunicOnCast(victim, AudioClipName.UseTome);
-                
+
                 // Create poison gameObject and send it at the victim
+                PropelObject enemyPropel = enemy.GameObject.GetComponentInChildren<PropelObject>();
                 GameObject poisonball = Instantiate(prefabPoisonball);
                 poisonball.transform.position = enemy.GameObject.transform.position;
-                poisonball.GetComponent<PropelObject>().Propel(
-                    enemy.BattleID, poisonball.transform.position,
+                poisonball.GetComponent<PropelProjectile>().PropelShoot(
+                    enemy.BattleID, poisonball.transform.position, enemyPropel,
                     heroObj[victim.PartyID], victim.BattleID, BattleMode.Magic_Poison);
 
                 // damage and turnover called upon impact
@@ -426,12 +427,13 @@ public class BattleManager : MonoBehaviour
             {
                 // If Runic is active, trigger Runic animation
                 victim = TestForRunicOnCast(victim, AudioClipName.UseTome);
-                
+
                 // Create fireball and send it at the victim
+                PropelObject enemyPropel = enemy.GameObject.GetComponentInChildren<PropelObject>();
                 GameObject fireball = Instantiate(prefabFireball);
                 fireball.transform.position = enemy.GameObject.transform.position;
-                fireball.GetComponent<PropelObject>().Propel(
-                    enemy.BattleID, fireball.transform.position,
+                fireball.GetComponent<PropelProjectile>().PropelShoot(
+                    enemy.BattleID, fireball.transform.position, enemyPropel,
                     heroObj[victim.PartyID], victim.BattleID, BattleMode.Magic_Fireball);
 
                 // damage and turnover called upon impact
@@ -642,23 +644,30 @@ public class BattleManager : MonoBehaviour
             case BattleMode.Magic_Fireball:
                 // Create and launch fireball
                 AudioManager.PlaySound(AudioClipName.Boom);
-                GameObject fireball = Instantiate(prefabFireball);
-                fireball.transform.position = heroObj[activeHero].transform.position;
-                fireball.GetComponent<PropelObject>().Propel(hero.BattleID, fireball.transform.position,
-                    enemyParty.Enemies[choice].GameObject, choice, BattleMode.Magic_Fireball);
-                hero.Sprites.UpdateSprite(Stance.Cast, 0.2f, 0);
+                {
+                    PropelObject heroPropel = heroObj[activeHero].GetComponent<PropelObject>();
+                    GameObject fireball = Instantiate(prefabFireball);
+                    fireball.transform.position = heroObj[activeHero].transform.position;
+                    fireball.GetComponent<PropelProjectile>().PropelShoot(
+                        hero.BattleID, fireball.transform.position, heroPropel,
+                        enemyParty.Enemies[choice].GameObject, choice, BattleMode.Magic_Fireball);
+                    hero.Sprites.UpdateSprite(Stance.Cast, 0.2f, 0);
+                }
                 // the rest handled upon impact in PropelObjectHit
                 break;
 
             case BattleMode.Magic_Poison:
                 // Create and launch poisonball
                 AudioManager.PlaySound(AudioClipName.UseTome);
-                GameObject poisonball = Instantiate(prefabPoisonball);
-                poisonball.transform.position = heroObj[activeHero].transform.position;
-                poisonball.GetComponent<PropelObject>().Propel(
-                    hero.BattleID, poisonball.transform.position,
-                    enemyParty.Enemies[choice].GameObject, choice, BattleMode.Magic_Poison);
-                hero.Sprites.UpdateSprite(Stance.Cast, 0.2f, 0);
+                {
+                    PropelObject heroPropel = heroObj[activeHero].GetComponent<PropelObject>();
+                    GameObject poisonball = Instantiate(prefabPoisonball);
+                    poisonball.transform.position = heroObj[activeHero].transform.position;
+                    poisonball.GetComponent<PropelProjectile>().PropelShoot(
+                        hero.BattleID, poisonball.transform.position, heroPropel,
+                        enemyParty.Enemies[choice].GameObject, choice, BattleMode.Magic_Poison);
+                    hero.Sprites.UpdateSprite(Stance.Cast, 0.2f, 0);
+                }
                 // the rest handled upon impact in PropelObjectHit
                 break;
 

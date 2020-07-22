@@ -30,7 +30,7 @@ public class PropelObject : MonoBehaviour
     protected Bounds targetLastPosition;         // a created area to act as a "net" for the moving object
     protected const float BoundsMargin = 0.5f;   // size of bounds
     protected int selfID = 0;                    // partyID or battleID of object, or the origin object
-    protected int BattleID { get
+    public int BattleID { get
         {
             if (gameObject.CompareTag("Hero_Battle")){ return BattleMath.ConvertHeroID(selfID); }
             else { return selfID; }
@@ -115,7 +115,7 @@ public class PropelObject : MonoBehaviour
     }
 
     // If the target is a GameObject with a collider, this method is triggered instead of in Update()
-    protected void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         // Verify target
         if (collision == targetCollider && IsPropelled && !isReturning)
@@ -152,7 +152,7 @@ public class PropelObject : MonoBehaviour
     /// <param name="startPosition"> Start position of the propelled object</param>
     /// <param name="targetObj"> Target GameObject</param>
     /// <param name="targetID"> Target's partyID or battleID</param>
-    public void Propel (int battleID, Vector2 startPosition, GameObject targetObj, int targetID, BattleMode mode)
+    public virtual void Propel (int battleID, Vector2 startPosition, GameObject targetObj, int targetID, BattleMode mode)
     {
         // Convert partyID to battleID if necessary
         selfID = gameObject.CompareTag("Hero_Battle") ? BattleMath.ConvertHeroID(battleID) : battleID;
