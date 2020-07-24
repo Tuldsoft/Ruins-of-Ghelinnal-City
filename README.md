@@ -1,9 +1,24 @@
-# Ruins-of-Ghelinnal-City
+# Ruins of Ghelinnal City
 A side-scroller hybrid RPG in homage to classic FF games, and using lore from a home-brew D&D campaign.
 
 Current builds are supplied in the Builds folder, and scripts and their support resources (csv files) are in the Assets folder. Other assets, such as images, audio, prefabs, scenes, are not shared.
 
 Feel free to browse! Thanks for stopping by.
+
+## Links
+Due to size limitations on GitHub, zip files of complete builds are stored on OneDrive.
+
+### PC
+https://1drv.ms/u/s!ArBjuRw43GBhq5FyAyP1neGyBlj-JA?e=Y45pru
+
+### Mac
+https://1drv.ms/u/s!ArBjuRw43GBhq5Fzx605j1sMVpdwxA?e=l3eU6B
+
+MAC USERS: Because this game is stored on OneDrive, your Mac may initially reject this. To get around that:
+* Unzip the file.
+* Attempt to run it once.
+* Go to System Preferences -> Security & Privacy, and run it from there.
+
 
 ## The Story
 A hero has wandered through the Briarwood forest and stumbled into the ruins of Ghelinnal City. Once inhabited by the elves, it was leveled in a magical catastrophe known as The Cataclysm. A remnant of elves, now blessed with werebear lycanthrope by their patron, Sehanine Moonbow, hold out in the center of the city against goblin and gnoll attacks. Though their might held fast for centuries, it has begun to wane, and the werebears are left weakened and dwindling in number. Ridara, the werebear high priest, suspects trouble down in the catacombs beneath the temple, and asks the hero to investigate. Calling upon the aid of the werebears and other adventurers hired for the task, the hero delves into the labyrinth below, discovering entire worlds and riches beneath.
@@ -11,7 +26,7 @@ A hero has wandered through the Briarwood forest and stumbled into the ruins of 
 ## Gameplay
 The player assembles a party of up to four heroes, and outfits them with consumable potions and tomes as well as weapons and armor. A side-scrolling dungeon level is entered, where the player can maneuver an avatar around obstacles and enemies. If an enemy is encountered, it triggers a battle between the hero party and a group of enemies. Victory in battle yields gold, though the party will sustain injury in the process. The objective of each dungeon level is to defeat the powerful boss at its end, but doing so requires multiple trips into the dungeons to earn gold for upgrade purchases in the shop and to increase the size of the party. Completing a dungeon unlocks additional stock in the shop, the next dungeon, and additional lore for the story. Complete all seven dungeons to win the game, unlocking the final pieces of the story (as well as unlocking unlimited items from the shop).
 
-## Refactoring To-Do
+### Refactoring To-Do
 * Create a generic Panel and PanelMonitor that can be used and reused for highlighting and selecting throughout all menus.
   * Build off work done with PartyMenuPanel and PanelSelection
   * An InvPanelMonitor and InvPanel would inherit and would have children for: BattleInventory, EquipMenu, InventoryMenu, Shop.
@@ -49,7 +64,8 @@ The player assembles a party of up to four heroes, and outfits them with consuma
 * Finish typing out monster data for use as defaults.
 * Add a cheat in the shop to increase StockLevel and DungeonLevelAccess incrementally, to test balance throughout the game.
 
-## Features To-Do (md lists are not cooperating )
+
+### Features To-Do (md lists are not cooperating )
 - More character-specific abilites and spells.
   - Make heroes targetable by abilities (Ex. Cure) and potions.
 - More unique monster abilities and AI.
@@ -68,7 +84,8 @@ The player assembles a party of up to four heroes, and outfits them with consuma
 - Possibly display data about an item before purchase. It is requested, but I kind of like the gamble.
 - HUD display in dungeon of hero's condition.
 
-## Dream Big To-Do
+
+### Dream Big To-Do
 
 * Hire an artist to create actual tile and sprite assets, rather than borrow from FF VI.
 * Hire a composer to create actual music, rather than borrow from FF VI.
