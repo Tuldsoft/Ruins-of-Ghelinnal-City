@@ -70,6 +70,8 @@ public class HeroStatsMenuMonitor : PartyMenuPanel
         hitPercentText.text = stats.HitPercent.ToString();
         evadePercentText.text = stats.EvadePercent.ToString();
         critChancePercentText.text = stats.CritChance.ToString();
+
+        gameObject.GetComponentInChildren<PartyMenuPanel>().RefreshPanel();
     }
 
     // Refresh each of the 6 slots of equipment

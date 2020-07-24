@@ -397,7 +397,7 @@ public class BattleManager : MonoBehaviour
                 EnemyName.Grease_Monkey,EnemyName.Cirpius, EnemyName.Poplium,EnemyName.Ninja,
                 EnemyName.Apokryphos, EnemyName.Brainpan, EnemyName.Misfit, EnemyName.Atma_Weapon };
             
-            if (poisonerList.Contains(enemy.Name) && (Random.value < 0.95f) // 25% chance
+            if (poisonerList.Contains(enemy.Name) && (Random.value < 0.25f) // 25% chance
                 && enemy.MP >= BattleAbilityData.Data[BattleMode.Magic_Poison].MP)
             {
                 // If Runic is active, trigger Runic animation
@@ -422,7 +422,7 @@ public class BattleManager : MonoBehaviour
                 EnemyName.Atma_Weapon};
 
                         
-            if (fireballerList.Contains(enemy.Name) && (Random.value < 0.20f) 
+            if (fireballerList.Contains(enemy.Name) && (Random.value < 0.20f) // 20% chance
                 && enemy.MP >= BattleAbilityData.Data[BattleMode.Magic_Fireball].MP)
             {
                 // If Runic is active, trigger Runic animation

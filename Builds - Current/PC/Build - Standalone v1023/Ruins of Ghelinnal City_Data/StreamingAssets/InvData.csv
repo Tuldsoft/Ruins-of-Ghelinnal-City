@@ -1,0 +1,78 @@
+﻿Name,FullName,Description,ID,Price,Type,Subtype,Slot,Rank,BaseHPMax,BaseMPMax,Strength,Defense,Magic,Resistance,Stamina,Agility,BaseHit,BaseEvade,CritChance,MinReward,MaxReward
+Potion_Health_Tiny,Tiny Health Potion,Heals 25 hit points,1,50,Potion,Health,none,1,,,,,,,,,,,,,
+Potion_Health_Small,Small Health Potion,Heals 75 hit points,2,250,Potion,Health,none,1,,,,,,,,,,,,,
+Potion_Health_Medium,Medium Health Potion,Heals 250 hit points,3,1000,Potion,Health,none,2,,,,,,,,,,,,,
+Potion_Health_Large,Large Health Potion,Heals 600 hit points,4,2500,Potion,Health,none,3,,,,,,,,,,,,,
+Potion_Health_Huge,Huge Health Potion,Heals 2000 hit points,5,6000,Potion,Health,none,5,,,,,,,,,,,,,
+Potion_Health_Epic,Epic Health Potion,Fully restores hit points,6,15000,Potion,Health,none,6,,,,,,,,,,,,,
+Potion_Mana_Tiny,Tiny Mana Potion,Heals 10 mana points,7,100,Potion,Mana,none,1,,,,,,,,,,,,,
+Potion_Mana_Small,Small Mana Potion,Heals 20 mana points,8,400,Potion,Mana,none,1,,,,,,,,,,,,,
+Potion_Mana_Medium,Medium Mana potion,Heals 50 mana points,9,1500,Potion,Mana,none,2,,,,,,,,,,,,,
+Potion_Mana_Large,Large Mana Potion,Heals 125 mana points,10,4000,Potion,Mana,none,3,,,,,,,,,,,,,
+Potion_Mana_Huge,Huge Mana Potion,Heals 250 mana points,11,10000,Potion,Mana,none,5,,,,,,,,,,,,,
+Potion_Mana_Epic,Epic Mana Potion,Fully restores mana points,12,25000,Potion,Mana,none,6,,,,,,,,,,,,,
+Scroll_Health_Lesser,Lesser Scroll of Health,Increases your maximum HP by 10,21,175,Tome,Health,none,1,10,,,,,,,,,,,,
+Scroll_Health_Greater,Greater Scroll of Health,Increases your maximum HP by 50,22,500,Tome,Health,none,3,50,,,,,,,,,,,,
+Rune_Health,Rune of Health,Increases your maximum HP by 200,23,7500,Tome,Health,none,5,200,,,,,,,,,,,,
+Scroll_Mana_Lesser,Lesser Scroll of Mana,Increases your maximum MP by 5,24,175,Tome,Mana,none,1,,5,,,,,,,,,,,
+Scroll_Mana_Greater,Greater Scroll of Mana,Increases your maximum MP by 20,25,500,Tome,Mana,none,3,,20,,,,,,,,,,,
+Rune_Mana,Rune of Mana,Increases your maximum MP by 100,26,7500,Tome,Mana,none,5,,100,,,,,,,,,,,
+Scroll_Strength_Lesser,Lesser Scroll of Strength,Increases your Strength by 5,27,250,Tome,Strength,none,2,,,5,,,,,,,,,,
+Scroll_Strength_Greater,Greater Scroll of Strength,Increases your Strength by 10,28,1000,Tome,Strength,none,4,,,10,,,,,,,,,,
+Rune_Strength,Rune of Strength,Increases your Strength by 25,29,12000,Tome,Strength,none,6,,,25,,,,,,,,,,
+Scroll_Defense_Lesser,Lesser Scroll of Defense,Increases your Defense by 5,30,250,Tome,Defense,none,2,,,,5,,,,,,,,,
+Scroll_Defense_Greater,Greater Scroll of Defense,Increases your Defense by 10,31,1000,Tome,Defense,none,4,,,,10,,,,,,,,,
+Rune_Defense,Rune of Defense,Increases your Defense by 25,32,12000,Tome,Defense,none,6,,,,25,,,,,,,,,
+Scroll_Magic_Lesser,Lesser Scroll of Magic,Increases your Magic by 5,33,250,Tome,Magic,none,2,,,,,5,,,,,,,,
+Scroll_Magic_Greater,Greater Scroll of Magic,Increases you Magic by 10,34,1000,Tome,Magic,none,4,,,,,10,,,,,,,,
+Rune_Magic,Rune of Magic,Increases your Magic by 25,35,12000,Tome,Magic,none,6,,,,,25,,,,,,,,
+Scroll_Resistance_Lesser,Lesser Scroll of Resistance,Increases your Resistance by 5,36,250,Tome,Resistance,none,2,,,,,,5,,,,,,,
+Scroll_Resistance_Greater,Greater Scroll of Resistance,Increases your Resistance by 10,37,1000,Tome,Resistance,none,4,,,,,,10,,,,,,,
+Rune_Resistance,Rune of Resistance,Increases your Resistance by 25,38,12000,Tome,Resistance,none,6,,,,,,25,,,,,,,
+Tome_Stamina,Tome of Stamina,Increases your Stamina by 10,40,2500,Tome,Stamina,none,3,,,,,,,10,,,,,,
+Tome_Stamina_Greater,Greater Tome of Stamina,Increases your Stamina by 25,41,15000,Tome,Stamina,none,6,,,,,,,25,,,,,,
+Tome_Agility,Tome of Agility,Increases your Agility by 10,43,2500,Tome,Agility,none,3,,,,,,,,10,,,,,
+Tome_Agility_Greater,Greater Tome of Agility,Increases your Agility by 25,44,15000,Tome,Agility,none,6,,,,,,,,25,,,,,
+Knife,Knife,Cuts through butter,61,45,Weapon,Dagger,Weapon,1,0,0,5,0,5,0,0,0,0,0,0,0,0
+Iron_Dagger,Iron Dagger,Durably stabby,62,75,Weapon,Dagger,Weapon,1,0,0,7,0,6,0,0,0,0,0,0,0,0
+Dirk,Dirk,A fancy name for a dagger,63,300,Weapon,Dagger,Weapon,2,0,0,16,0,16,0,0,0,0,0,0,0,0
+Silver_Dagger,Silver Dagger,Do not show this to the werebears,64,900,Weapon,Dagger,Weapon,3,0,0,30,0,62,0,0,0,0,0,0,0,0
+Main_Gauche,Main Gauche,Not for your right hand,65,5500,Weapon,Dagger,Weapon,4,0,0,75,20,35,0,0,0,15,15,0,0,0
+Bone_Dagger,Bone Dagger,From some large animal (you think),66,8000,Weapon,Dagger,Weapon,4,0,0,95,0,44,0,0,0,0,0,0,0,0
+Mithril_Knife,Mithril Knife,A fabled metal blade,67,20000,Weapon,Dagger,Weapon,5,0,0,135,0,95,10,0,0,5,0,0,0,0
+Air_Lancet,Air Lancet,Cuts through the air with great speed,68,45000,Weapon,Dagger,Weapon,6,0,20,188,0,150,12,0,20,15,10,0,0,0
+Cruel_Knife,Cruel Knife,Cutting is nasty business,69,50000,Weapon,Dagger,Weapon,6,0,0,200,0,90,0,0,0,0,0,20,0,0
+Leather_Belt,Leather Belt,Keeps your pants up,101,30,Armor,Belt,Belt,1,0,0,0,3,0,4,0,0,0,0,0,0,0
+Gunslinger_Belt,Gunslinger Belt,Pew pew,102,120,Armor,Belt,Belt,2,0,0,5,6,0,5,0,0,0,0,10,0,0
+Courage_Wrap,Courage Wrap,Makes you brave,103,400,Armor,Belt,Belt,3,20,0,10,8,0,8,0,0,0,0,0,0,0
+Fire_Dance_Belt,Fire Dance Belt,Can you dance the fandango?,104,9000,Armor,Belt,Belt,5,0,10,0,10,25,10,0,10,10,10,0,0,0
+Mantra_Belt,Mantra Belt,Focus on your inner ki,105,12000,Armor,Belt,Belt,6,15,20,0,13,15,11,15,0,0,0,0,0,0
+Fancy_Boots,Fancy Boots,Fashionable,121,35,Armor,Boots,Boots,1,0,15,0,3,10,2,0,5,0,0,0,0,0
+Leather_Boots,Leather Boots,Might give you callouses,122,45,Armor,Boots,Boots,1,0,0,0,5,0,5,0,0,0,0,0,0,0
+Mudruckers,Mudruckers,Mud stays on the outside,123,350,Armor,Boots,Boots,2,0,0,0,8,0,12,0,0,0,0,0,0,0
+Cloud_Walkers,Cloud Walkers,You feel light on your feet,124,8000,Armor,Boots,Boots,5,0,0,0,11,12,13,0,5,10,0,0,0,0
+Supplex_Boots,Supplex Boots,Supplex a train,125,14000,Armor,Boots,Boots,6,25,0,10,15,0,14,10,0,0,0,12,0,0
+Linen_Shirt,Linen Shirt,Bearly (sic) keeps chest hair in,141,35,Armor,Chest,Armor,1,0,0,0,3,10,5,0,0,0,0,0,0,0
+Leather_Vest,Leather Vest,Warmer than nothing,142,55,Armor,Chest,Armor,1,0,0,0,6,0,8,0,0,0,0,0,0,0
+Apprentice_Robes,Apprentice Robes,Good for training,143,40,Armor,Chest,Armor,1,0,15,0,4,26,10,0,5,0,0,0,0,0
+Studded_Leather,Studded Leather,Reinforced with metal plates,144,550,Armor,Chest,Armor,2,0,0,0,19,0,8,0,0,0,0,0,0,0
+Thief_Jerkin,Thief Jerkin,Sneaky,145,2500,Armor,Chest,Armor,3,0,0,0,21,0,14,5,10,12,5,15,0,0
+Bum_Rush_Blazer,Bum Rush Blazer,Encircle your enemy with blinding speed,146,9000,Armor,Chest,Armor,4,15,0,15,29,5,21,5,15,35,15,5,0,0
+Samurai_Armor,Samurai Armor,For the oriental warrior,147,25000,Armor,Chest,Armor,5,0,0,5,32,10,22,10,0,0,0,10,0,0
+Wind_Blade_Breaker,Wind Blade Clothes,Breezy,148,40000,Armor,Chest,Armor,6,20,25,0,40,50,25,0,10,5,10,5,0,0
+Fancy_Sleeves,Fancy Sleeves,Showy dress sleeves,171,30,Armor,Gloves,Gloves,1,0,0,0,3,0,5,0,0,0,0,0,0,0
+Leather_Gloves,Leather Gloves,Does not leave fingerprints on loot,172,75,Armor,Gloves,Gloves,1,0,0,0,5,0,2,5,10,10,0,0,0,0
+White_Gloves,White Gloves,To test cleanliness,173,400,Armor,Gloves,Gloves,2,15,0,0,5,12,6,0,0,0,0,0,0,0
+Arcanist_Gloves,Arcanist Gloves,For those delicate magic fingers,174,2000,Armor,Gloves,Gloves,3,0,15,0,7,15,14,0,0,0,0,0,0,0
+Studded_Grips,Studded Grips,Good for punching,175,6500,Armor,Gloves,Gloves,4,0,0,0,9,0,10,0,0,0,0,0,0,0
+Pummel_Bands,Pummel Bands,Enables fists of fury,176,11000,Armor,Gloves,Gloves,5,0,0,20,10,0,8,0,15,50,10,0,0,0
+Aura_Bolt_Bracers,Aura Bolt Bracers,Hadouken,177,13000,Armor,Gloves,Gloves,6,20,10,0,15,32,14,5,0,0,0,10,0,0
+Bandana,Bandana,The greatest defense is no defense,191,60,Armor,Helm,Helm,1,0,0,5,3,0,2,0,5,10,15,0,0,0
+Leather_Hood,Leather Hood,Weatherproof,192,70,Armor,Helm,Helm,2,0,0,0,4,0,4,0,0,0,0,0,0,0
+Arcanist_Hood,Arcanist Hood,Makes you mysterious,193,1100,Armor,Helm,Helm,3,0,25,0,6,15,10,0,0,0,0,0,0,0
+Red_Beret,Red Beret,Oooh la la,194,4000,Armor,Helm,Helm,4,5,0,5,6,0,5,0,5,0,5,0,0,0
+Royal_Crown,Royal Crown,The crown of the Calengund,195,6500,Armor,Helm,Helm,4,15,15,0,7,0,6,0,0,0,0,0,0,0
+Plague_Doctor,Plague Doctor,Creepy and effective,196,9000,Armor,Helm,Helm,5,10,10,0,7,12,11,5,0,0,0,0,0,0
+Samurai_Helm,Samurai Helm,Sturdy headgear,197,9500,Armor,Helm,Helm,5,0,0,0,10,0,9,10,0,0,0,5,0,0
+Spiraler_Circlet,Spiraler Circlet,Master the arcane - at a cost,198,11000,Armor,Helm,Helm,6,-35,0,0,12,30,13,-5,0,0,15,15,0,0
+Tiger_Mask,Tiger Mask,Makes even werebears terrified,199,19000,Armor,Helm,Helm,6,20,0,18,13,0,12,0,12,5,0,5,0,0

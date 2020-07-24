@@ -22,6 +22,19 @@ public abstract class BattleSubMenu : MonoBehaviour
         EventManager.AddInvoker_Battle_SubMenuSelection(this);
     }
 
+    protected virtual void OnEnable()
+    {
+        // scale for Mac users
+        float screenWidth = Screen.width;
+        float screenHeight = Screen.height;
+        const float idealRatio = 1280.0f / 720.0f;
+        float scaledFloat = (screenWidth / screenHeight) / idealRatio;
+        Vector3 scaledVector = new Vector3(scaledFloat, scaledFloat, 1);
+
+        Transform backgroundGrid = gameObject.GetComponentInChildren<Grid>().transform;
+        backgroundGrid.localScale = scaledVector;
+    }
+
     // Called by derived class methods
     protected void CloseSubMenu()
     {

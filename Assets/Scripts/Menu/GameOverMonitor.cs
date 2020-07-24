@@ -117,6 +117,9 @@ public class GameOverMonitor : MonoBehaviour
         // Add earning gold from a battle to party 
         BattleLoader.Party.Gold += BattleLoader.BattleEarnings;
         
+        // Bring any dead heroes to 1 hp
+        ReviveHeroesFromDead();
+
         // Go to next thing
         if (BattleLoader.GameOver == GameOver.BossWin)
         {
@@ -133,8 +136,18 @@ public class GameOverMonitor : MonoBehaviour
             BattleLoader.GameOver = null;
             MenuManager.EnterDungeonLevel(BattleLoader.DungeonLevel, false);
         }
+    }
 
-        
+    // At the end of a battle, make sure everyone has at least 1 hp
+    void ReviveHeroesFromDead()
+    {
+        foreach (BattleHero hero in BattleLoader.Party.Hero)
+        {
+            if (hero.HP <= 0)
+            {
+                hero.TakeDamage(-1);
+            }
+        }
     }
     #endregion
 }

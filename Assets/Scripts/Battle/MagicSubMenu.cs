@@ -33,8 +33,9 @@ public class MagicSubMenu : BattleSubMenu
     #endregion
 
     // Called when using .SetActive(true). Called by BattleManager.Click_Magic()
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         SetSpells(type);
     }
 
